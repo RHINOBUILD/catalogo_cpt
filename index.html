@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0A1F33">
+<title>Catálogo CPT | Grupo Saint Luke's</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-900:#0A1F33; --navy-800:#0F2E4D; --navy-700:#163A5F; --navy-600:#1E4E79; --navy-100:#E3EAF2;
+    --gold-600:#94701F; --gold-500:#C29A45; --gold-100:#F3E7CC;
+    --paper:#F6F4EE; --card:#FFFFFF; --ink:#1F2530; --ink-soft:#5B6373; --line:#E3DFD3;
+    --danger:#B14A3C; --danger-bg:#FBEDEA; --ok:#2E6B4F; --ok-bg:#E6F2EC;
+    --radius:10px; --shadow:0 2px 14px rgba(10,31,51,.08);
+    --mono:'IBM Plex Mono',ui-monospace,monospace; --serif:'Source Serif 4',Georgia,serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  [hidden]{display:none !important;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;font-size:14.5px;}
+  button,input,select{font:inherit;color:inherit;}
+  button{cursor:pointer;}
+  :focus-visible{outline:2.5px solid var(--gold-500);outline-offset:2px;}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+  .mono{font-family:var(--mono);}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px 60px;}
+
+  /* ---------- Header ---------- */
+  header.top{background:linear-gradient(180deg,var(--navy-800),var(--navy-900));padding:28px 20px 22px;border-bottom:3px solid var(--gold-500);}
+  .header-inner{max-width:1040px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-500);margin:0 0 8px;}
+  h1{font-family:var(--serif);font-weight:600;font-size:27px;color:#F5F3EC;margin:0 0 5px;}
+  .subtitle{color:#B8C4D4;font-size:13.5px;margin:0;}
+  .header-stats{display:flex;gap:18px;color:#B8C4D4;font-size:12px;}
+  .header-stats b{display:block;font-family:var(--mono);font-size:17px;color:#F5F3EC;font-weight:600;}
+
+  /* ---------- Config bar ---------- */
+  .config{position:sticky;top:0;z-index:20;background:rgba(246,244,238,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);}
+  .config-inner{max-width:1040px;margin:0 auto;padding:10px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+  .cfg{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-soft);}
+  .cfg label{font-weight:600;color:var(--ink);}
+  .cfg select{padding:7px 10px;border:1.5px solid var(--line);border-radius:7px;background:#fff;font-size:13px;min-width:220px;}
+  .seg{display:inline-flex;border:1.5px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;}
+  .seg button{border:0;background:none;padding:6px 12px;font-size:12.5px;font-weight:500;color:var(--ink-soft);}
+  .seg button[aria-pressed="true"]{background:var(--navy-800);color:#fff;}
+  .switch{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--ink);user-select:none;}
+  .switch input{accent-color:var(--navy-700);width:16px;height:16px;}
+  .cfg-note{margin-left:auto;font-size:11.5px;color:var(--ink-soft);}
+
+  /* ---------- Tabs ---------- */
+  .tabs{display:flex;gap:4px;margin:20px 0 0;border-bottom:1.5px solid var(--line);overflow-x:auto;}
+  .tab-btn{border:0;background:none;padding:11px 16px;font-weight:600;font-size:14px;color:var(--ink-soft);border-bottom:3px solid transparent;margin-bottom:-1.5px;white-space:nowrap;display:flex;gap:7px;align-items:center;}
+  .tab-btn[aria-selected="true"]{color:var(--navy-800);border-bottom-color:var(--gold-500);}
+  .tab-count{font-family:var(--mono);font-size:11px;background:var(--gold-100);color:var(--gold-600);border-radius:20px;padding:1px 7px;}
+  .tab-panel{display:none;padding-top:16px;}
+  .tab-panel.visible{display:block;}
+
+  /* ---------- Panels / inputs ---------- */
+  .panel{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .field{position:relative;flex:1;min-width:220px;}
+  .field input,.input{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:8px;background:var(--paper);font-size:15px;}
+  .field input:focus,.input:focus,select:focus{outline:none;border-color:var(--navy-600);background:#fff;}
+  .field.search input{padding-left:40px;}
+  .field .icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--ink-soft);pointer-events:none;}
+  select.input{padding:10px 12px;font-size:13.5px;background:#fff;}
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center;}
+  .filters select{max-width:100%;}
+  .hint{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0;line-height:1.5;}
+  .btn{border:1.5px solid var(--navy-800);background:var(--navy-800);color:#fff;border-radius:8px;padding:9px 16px;font-weight:600;font-size:13.5px;display:inline-flex;gap:7px;align-items:center;}
+  .btn:hover{background:var(--navy-700);}
+  .btn.ghost{background:#fff;color:var(--navy-800);}
+  .btn.ghost:hover{background:var(--navy-100);}
+  .btn.gold{background:var(--gold-500);border-color:var(--gold-500);color:var(--navy-900);}
+  .btn.small{padding:6px 11px;font-size:12.5px;}
+  .btn:disabled{opacity:.5;cursor:not-allowed;}
+  .linkbtn{border:0;background:none;color:var(--navy-600);font-weight:500;padding:0;font-size:12.5px;}
+  .linkbtn:hover{text-decoration:underline;}
+
+  /* ---------- Autocomplete ---------- */
+  .ac-list{position:absolute;left:0;right:0;top:calc(100% + 4px);background:#fff;border:1px solid var(--line);border-radius:9px;box-shadow:0 10px 30px rgba(10,31,51,.14);z-index:30;max-height:340px;overflow:auto;display:none;}
+  .ac-list.open{display:block;}
+  .ac-item{display:flex;gap:10px;padding:9px 12px;cursor:pointer;align-items:baseline;border-bottom:1px solid #F1EEE6;}
+  .ac-item:last-child{border-bottom:0;}
+  .ac-item[aria-selected="true"],.ac-item:hover{background:var(--gold-100);}
+  .ac-item .mono{font-weight:600;color:var(--navy-800);min-width:56px;}
+  .ac-item span:last-child{font-size:13px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+  /* ---------- Status ---------- */
+  .status-bar{display:flex;justify-content:space-between;align-items:center;margin:18px 2px 10px;font-size:12.5px;color:var(--ink-soft);gap:10px;flex-wrap:wrap;}
+  .status-bar b{color:var(--ink);font-weight:600;}
+
+  /* ---------- Result cards ---------- */
+  #results{display:flex;flex-direction:column;gap:9px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:9px;display:flex;overflow:hidden;cursor:pointer;transition:box-shadow .12s,border-color .12s;text-align:left;width:100%;padding:0;}
+  .card:hover{border-color:#CFC7B2;box-shadow:0 3px 14px rgba(10,31,51,.08);}
+  .card-tab{width:5px;flex-shrink:0;background:var(--gold-500);}
+  .card.noprice .card-tab{background:#D5D0C3;}
+  .card-body{padding:13px 16px;flex:1;min-width:0;display:flex;gap:16px;align-items:center;}
+  .card-main{flex:1;min-width:0;}
+  .card-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .code{font-family:var(--mono);font-weight:600;font-size:15.5px;color:var(--navy-800);background:var(--gold-100);padding:2px 9px;border-radius:5px;}
+  .badge{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:20px;padding:2px 8px;}
+  .badge.addon{background:#EDE4F7;color:#5B3A87;}
+  .badge.sec{background:var(--navy-100);color:var(--navy-700);}
+  .badge.aseg{background:#F1EEE6;color:var(--ink-soft);}
+  .desc{margin:7px 0 0;font-size:14px;line-height:1.45;color:var(--ink);}
+  .card-price{text-align:right;flex-shrink:0;}
+  .card-price .amt{font-family:var(--mono);font-weight:600;font-size:15.5px;color:var(--navy-800);}
+  .card-price .lbl{font-size:11px;color:var(--ink-soft);}
+  .card-price .na{font-size:12px;color:var(--ink-soft);}
+  mark{background:var(--gold-100);color:var(--navy-800);border-radius:3px;padding:0 1px;}
+  .more{display:flex;justify-content:center;margin-top:12px;}
+
+  /* ---------- Empty / loading ---------- */
+  .state{text-align:center;padding:46px 20px;color:var(--ink-soft);}
+  .state-icon{font-size:28px;margin-bottom:8px;opacity:.55;}
+  .state h3{font-family:var(--serif);color:var(--ink);font-size:17px;margin:0 0 6px;font-weight:600;}
+  .state p{font-size:13.5px;margin:0 auto 12px;max-width:460px;line-height:1.5;}
+  .skeleton{height:74px;border-radius:9px;background:linear-gradient(90deg,#EEEAE0 25%,#F6F3EC 50%,#EEEAE0 75%);background-size:200% 100%;animation:sh 1.2s infinite;}
+  @keyframes sh{to{background-position:-200% 0;}}
+
+  /* ---------- Calculation layout ---------- */
+  .calc-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;margin-top:16px;align-items:start;}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;}
+  .box h3{font-family:var(--serif);font-size:16px;margin:0 0 10px;color:var(--navy-800);font-weight:600;}
+  .box h4{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px;}
+  .sel-code{display:flex;gap:10px;align-items:flex-start;}
+  .sel-code .desc{margin:2px 0 0;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);text-align:left;font-weight:600;padding:6px 6px;border-bottom:1.5px solid var(--line);}
+  td{padding:7px 6px;border-bottom:1px solid #F0ECE3;vertical-align:middle;}
+  td.num,th.num{text-align:right;font-family:var(--mono);white-space:nowrap;}
+  tr.grp td{background:#FAF8F3;font-weight:700;font-size:11.5px;letter-spacing:.06em;color:var(--navy-700);text-transform:uppercase;}
+  tr.na td{color:#A8AEB8;}
+  tr.picked td{background:#FFFBF0;}
+  .lvl{font-size:10.5px;font-weight:700;color:var(--gold-600);}
+  .summary{background:var(--navy-900);color:#F5F3EC;border-radius:var(--radius);padding:18px;}
+  .summary .label{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-500);margin:0;}
+  .summary .amount{font-family:var(--mono);font-size:30px;font-weight:600;margin:6px 0 2px;}
+  .summary .meta{font-size:12px;color:#B8C4D4;margin:0;line-height:1.5;}
+  .adj{margin-top:12px;border-top:1px solid rgba(255,255,255,.12);padding-top:10px;font-size:12.5px;}
+  .adj div{display:flex;justify-content:space-between;padding:2px 0;color:#D5DCE6;}
+  .adj .mono{color:#F5F3EC;}
+  .roles{margin-top:14px;}
+  .role{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #F0ECE3;font-size:13.5px;}
+  .role:last-child{border-bottom:0;}
+  .role label{display:flex;gap:8px;align-items:center;cursor:pointer;}
+  .role input{accent-color:var(--navy-700);width:16px;height:16px;}
+  .role .pct{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);}
+  .role .amt{font-family:var(--mono);font-weight:600;color:var(--navy-800);}
+  .role.total{border-top:1.5px solid var(--line);border-bottom:0;margin-top:4px;padding-top:10px;font-weight:700;}
+  .role.off .amt{color:#B4B9C2;text-decoration:line-through;}
+  .note{font-size:12px;line-height:1.5;color:var(--ink-soft);background:#FAF8F3;border-left:3px solid var(--gold-500);padding:8px 11px;border-radius:0 6px 6px 0;margin:10px 0 0;}
+  .warn{font-size:12.5px;line-height:1.5;color:var(--danger);background:var(--danger-bg);padding:9px 12px;border-radius:7px;margin:10px 0 0;}
+  .okmsg{font-size:12.5px;color:var(--ok);background:var(--ok-bg);padding:9px 12px;border-radius:7px;margin:10px 0 0;}
+  .inline-input{display:flex;align-items:center;gap:8px;margin-top:8px;}
+  .inline-input input{max-width:180px;padding:8px 10px;font-family:var(--mono);}
+  .diff{font-family:var(--mono);font-size:12.5px;}
+  .diff.up{color:var(--ok);} .diff.down{color:var(--danger);}
+  details.box summary{cursor:pointer;font-weight:600;color:var(--navy-800);list-style:none;}
+  details.box summary::-webkit-details-marker{display:none;}
+  details.box summary::before{content:'▸ ';color:var(--gold-500);}
+  details.box[open] summary::before{content:'▾ ';}
+
+  /* ---------- Multi procedures ---------- */
+  .proc{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:9px;padding:11px 14px;margin-bottom:8px;}
+  .proc .order{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:20px;display:inline-block;}
+  .o1{background:var(--gold-100);color:var(--gold-600);} .o2{background:var(--navy-100);color:var(--navy-700);} .o3{background:#EDEDED;color:var(--ink-soft);} .oa{background:#EDE4F7;color:#5B3A87;} .ox{background:var(--danger-bg);color:var(--danger);}
+  .proc-info{flex:1;min-width:0;}
+  .proc-info .desc{margin:4px 0 0;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .proc-base{font-size:12px;color:var(--ink-soft);margin-top:2px;}
+  .proc-final{font-family:var(--mono);font-weight:700;font-size:15px;color:var(--navy-800);text-align:right;white-space:nowrap;}
+  .proc-final small{display:block;font-size:11px;font-weight:400;color:var(--ink-soft);}
+  .icon-btn{border:0;background:none;color:var(--ink-soft);font-size:20px;line-height:1;padding:4px 6px;border-radius:6px;}
+  .icon-btn:hover{background:#F1EEE6;color:var(--danger);}
+  .move{display:flex;flex-direction:column;}
+  .move .icon-btn{font-size:12px;padding:1px 5px;}
+  .move .icon-btn:hover{color:var(--navy-700);}
+
+  /* ---------- Modal ---------- */
+  .modal-bg{position:fixed;inset:0;background:rgba(10,31,51,.45);z-index:50;display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto;}
+  .modal-bg.open{display:flex;}
+  .modal{background:var(--card);border-radius:12px;max-width:760px;width:100%;box-shadow:0 20px 60px rgba(10,31,51,.3);overflow:hidden;}
+  .modal-head{background:var(--navy-900);color:#F5F3EC;padding:18px 20px;display:flex;justify-content:space-between;gap:12px;}
+  .modal-head .code{background:var(--gold-500);color:var(--navy-900);}
+  .modal-head .desc{color:#E5E9EF;margin-top:8px;}
+  .modal-head .icon-btn{color:#B8C4D4;}
+  .modal-body{padding:16px 20px 20px;}
+  .modal-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+  .chip{font-size:12px;padding:4px 10px;border-radius:20px;background:#F1EEE6;color:var(--ink-soft);}
+  .chip.on{background:var(--ok-bg);color:var(--ok);font-weight:600;}
+
+  /* ---------- Request form ---------- */
+  .req{max-width:460px;margin:0 auto;text-align:left;display:grid;gap:8px;}
+  .req input{padding:9px 11px;border:1.5px solid var(--line);border-radius:7px;background:#fff;}
+
+  /* ---------- Toast ---------- */
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy-900);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;opacity:0;transition:.2s;z-index:60;pointer-events:none;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  footer{text-align:center;padding:26px 20px 10px;font-size:11.5px;color:#8C95A3;line-height:1.6;}
+
+  /* ---------- Print sheet ---------- */
+  #printArea{display:none;}
+  @media print{
+    @page{size:letter;margin:14mm;}
+    body{background:#fff;font-size:11.5px;}
+    body > *:not(#printArea){display:none !important;}
+    #printArea{display:block;}
+    .p-head{display:flex;justify-content:space-between;border-bottom:2px solid #0A1F33;padding-bottom:8px;margin-bottom:12px;}
+    .p-head h2{font-family:var(--serif);margin:0;font-size:18px;color:#0A1F33;}
+    .p-head p{margin:2px 0 0;font-size:11px;color:#444;}
+    .p-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin:10px 0 14px;font-size:11px;}
+    .p-fields div{border-bottom:1px solid #999;padding-bottom:3px;}
+    #printArea table{font-size:11px;margin-bottom:12px;}
+    #printArea th{color:#333;}
+    .p-total{display:flex;justify-content:space-between;font-weight:700;font-size:13px;border-top:2px solid #0A1F33;padding-top:6px;margin-top:4px;}
+    .p-sign{display:grid;grid-template-columns:1fr 1fr;gap:38px 30px;margin-top:46px;font-size:10.5px;text-align:center;}
+    .p-sign div{border-top:1px solid #333;padding-top:4px;}
+    .p-foot{margin-top:24px;font-size:9.5px;color:#666;}
+  }
+
+  @media (max-width:820px){
+    .calc-grid{grid-template-columns:1fr;}
+    .cfg-note{display:none;}
+  }
+  @media (max-width:560px){
+    h1{font-size:22px;}
+    .wrap,.config-inner{padding-left:16px;padding-right:16px;}
+    .cfg select{min-width:0;width:100%;}
+    .cfg{width:100%;}
+    .card-body{flex-direction:column;align-items:flex-start;gap:8px;}
+    .card-price{text-align:left;}
+    .header-stats{display:none;}
+    .summary .amount{font-size:25px;}
+    .modal-bg{padding:0;}
+    .modal{border-radius:0;min-height:100%;}
+    .col-tab{display:none;}
+    .modal-body,.modal-head{padding-left:16px;padding-right:16px;}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important;}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="header-inner">
+    <div>
+      <p class="eyebrow">Grupo Saint Luke's Hospitals</p>
+      <h1>Catálogo CPT</h1>
+      <p class="subtitle">Consulta de códigos y cálculo de honorarios médicos por aseguradora</p>
+    </div>
+    <div class="header-stats" aria-hidden="true">
+      <div><b id="statCodes">—</b>códigos</div>
+      <div><b id="statPol">—</b>pólizas</div>
+    </div>
+  </div>
+</header>
+
+<div class="config" role="region" aria-label="Configuración de cálculo">
+  <div class="config-inner">
+    <div class="cfg">
+      <label for="cfgPoliza">Aseguradora / póliza</label>
+      <select id="cfgPoliza"><option value="">Promedio de pólizas disponibles</option></select>
+    </div>
+    <div class="cfg">
+      <span id="pacLbl" style="font-weight:600;color:var(--ink)">Paciente</span>
+      <div class="seg" role="group" aria-labelledby="pacLbl">
+        <button type="button" id="pacNac" aria-pressed="true">Nacional</button>
+        <button type="button" id="pacInt" aria-pressed="false">Internacional</button>
+      </div>
+    </div>
+    <label class="switch"><input type="checkbox" id="cfgPronto"> Pronto pago <span id="ppLbl" class="mono" style="color:var(--ink-soft)">(−15%)</span></label>
+    <span class="cfg-note" id="cfgNote"></span>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="tabs" role="tablist" aria-label="Secciones">
+    <button class="tab-btn" role="tab" id="tab-buscar" aria-controls="panel-buscar" aria-selected="true" data-tab="buscar">Buscar códigos</button>
+    <button class="tab-btn" role="tab" id="tab-pago" aria-controls="panel-pago" aria-selected="false" data-tab="pago" tabindex="-1">Calcular honorarios</button>
+    <button class="tab-btn" role="tab" id="tab-multi" aria-controls="panel-multi" aria-selected="false" data-tab="multi" tabindex="-1">Cirugía con varios códigos <span class="tab-count" id="multiCount" hidden>0</span></button>
+  </div>
+
+  <!-- =================== BUSCAR =================== -->
+  <section class="tab-panel visible" id="panel-buscar" role="tabpanel" aria-labelledby="tab-buscar">
+    <div class="panel">
+      <div class="field search">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <label for="searchInput" class="sr-only">Buscar por código o descripción</label>
+        <input type="search" id="searchInput" autocomplete="off" placeholder="Código o descripción (ej. 47562, colecistectomía, hernia inguinal)">
+      </div>
+      <div class="filters">
+        <label for="secSelect" class="sr-only">Sección</label>
+        <select id="secSelect" class="input" style="flex:1;min-width:220px"><option value="">Todas las secciones</option></select>
+        <label for="sortSelect" class="sr-only">Ordenar</label>
+        <select id="sortSelect" class="input" style="width:auto">
+          <option value="code">Ordenar por código</option>
+          <option value="feeDesc">Mayor honorario primero</option>
+          <option value="feeAsc">Menor honorario primero</option>
+        </select>
+        <label class="switch"><input type="checkbox" id="onlyPriced"> Solo con tarifa en la póliza elegida</label>
+      </div>
+      <p class="hint">Escribe varias palabras para afinar (todas deben aparecer). No importan acentos ni mayúsculas. Toca un código para ver todas sus tarifas.</p>
+    </div>
+
+    <div class="status-bar">
+      <span id="statusText" aria-live="polite">Cargando catálogo…</span>
+      <button class="linkbtn" id="refreshBtn" type="button">Actualizar datos</button>
+    </div>
+    <div id="results"></div>
+    <div class="more" id="moreWrap" hidden><button class="btn ghost" id="moreBtn" type="button">Mostrar más</button></div>
+  </section>
+
+  <!-- =================== CALCULAR =================== -->
+  <section class="tab-panel" id="panel-pago" role="tabpanel" aria-labelledby="tab-pago">
+    <div class="panel">
+      <div class="field search" id="payField">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <label for="payInput" class="sr-only">Código CPT a calcular</label>
+        <input type="search" id="payInput" autocomplete="off" placeholder="Código CPT o descripción (ej. 46260)" role="combobox" aria-expanded="false" aria-controls="payAc" aria-autocomplete="list">
+        <div class="ac-list" id="payAc" role="listbox"></div>
+      </div>
+      <p class="hint">El honorario del cirujano es la tarifa del tabulador de la aseguradora <b id="hintDesc">menos 30%</b>. Los demás roles se calculan como porcentaje del cirujano.</p>
+    </div>
+    <div id="payOut"></div>
+  </section>
+
+  <!-- =================== MULTI =================== -->
+  <section class="tab-panel" id="panel-multi" role="tabpanel" aria-labelledby="tab-multi">
+    <div class="panel">
+      <div class="field search" id="multiField">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <label for="multiInput" class="sr-only">Agregar código a la cirugía</label>
+        <input type="search" id="multiInput" autocomplete="off" placeholder="Agrega los códigos de la cirugía (ej. 47562, 49505)" role="combobox" aria-expanded="false" aria-controls="multiAc" aria-autocomplete="list">
+        <div class="ac-list" id="multiAc" role="listbox"></div>
+      </div>
+      <p class="hint" id="multiRuleHint">El procedimiento de mayor honorario se paga al 100%, el segundo al 50% y del tercero en adelante al 25%. Los códigos adicionales (+) se pagan completos y no cuentan en el orden.</p>
+    </div>
+    <div id="multiOut"></div>
+  </section>
+</main>
+
+<footer>
+  Uso interno · Grupo Saint Luke's Hospitals · Capital Humano<br>
+  Tarifas tomadas de los tabuladores AXA, ATLAS y GNP 2025. Catálogo curado: no sustituye el manual oficial CPT® de la AMA ni la autorización de la aseguradora.<br>
+  <span id="footData"></span>
+</footer>
+
+<!-- Detail modal -->
+<div class="modal-bg" id="modalBg" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="modal-head">
+      <div style="min-width:0">
+        <div class="card-top" id="mTop"></div>
+        <p class="desc" id="mTitle"></p>
+      </div>
+      <button class="icon-btn" id="mClose" type="button" aria-label="Cerrar">&times;</button>
+    </div>
+    <div class="modal-body" id="mBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="printArea"></div>
+
+<script>
+(() => {
+  'use strict';
+
+  // ============================================================
+  // CONFIGURACIÓN — URL de la Web App de Apps Script (termina en /exec)
+  // ============================================================
+  const API_URL = "https://script.google.com/macros/s/AKfycbw9BGLlqRKzRUkLVyGSo6JAXej3nVPuzlidUBQPAAxR_gzfwX-yH8fxDXT13-RAphu6FA/exec";
+
+  const CACHE_KEY = 'cptcat_v2_data';
+  const PREFS_KEY = 'cptcat_v2_prefs';
+  const MULTI_KEY = 'cptcat_v2_multi';
+  const PAGE = 40;
+
+  const REGLAS_DEFAULT = {
+    descuento:.30, pct_cirujano:1, pct_anestesiologo:.30, pct_ayudante1:.20, pct_ayudante2:.10,
+    multi_1:1, multi_2:.5, multi_3:.25, factor_internacional:1.3, pronto_pago:.15, divisor_equipo:1.5
+  };
+  const ROLES = [
+    { key:'cir', label:'Cirujano', regla:'pct_cirujano', flag:0 },
+    { key:'ane', label:'Anestesiólogo', regla:'pct_anestesiologo', flag:1 },
+    { key:'ay1', label:'1er Ayudante', regla:'pct_ayudante1', flag:2 },
+    { key:'ay2', label:'2do Ayudante', regla:'pct_ayudante2', flag:3 }
+  ];
+
+  // ---------------- Estado ----------------
+  let DATA = { reglas:{...REGLAS_DEFAULT}, polizas:[], secciones:[], codigos:[] };
+  let byCode = new Map();
+  let prefs = { poliza:'', internacional:false, pronto:false };
+  let multi = [];          // [{c}]
+  let payCode = null;      // código activo en Calcular
+  let payChecked = null;   // Set de índices de póliza marcadas
+  let payRoles = null;     // Set de roles incluidos
+  let payNeg = '';         // honorario negociado
+  let teamTotal = '';
+  let multiAy2 = false;
+  let shown = PAGE;
+
+  // ---------------- Utilidades ----------------
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const fold = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+  const normCode = s => String(s ?? '').replace(/\s+/g,'').toUpperCase();
+  const money = n => '$' + (Number(n)||0).toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const pct = n => (Math.round(n*1000)/10).toString().replace(/\.0$/,'') + '%';
+  const R = () => DATA.reglas;
+  const store = {
+    get(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } },
+    set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } }
+  };
+  function debounce(fn, ms){ let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
+  function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('show'),2200); }
+  function fmtDate(iso){ try{ return new Date(iso).toLocaleString('es-MX',{dateStyle:'medium',timeStyle:'short'}); }catch(e){ return ''; } }
+
+  // ---------------- Datos ----------------
+  function adaptLegacy(data){
+    // Compatibilidad con la versión 1 del Apps Script ({codigos, honorarios})
+    if (!data || data.version || !Array.isArray(data.codigos)) return data;
+    const polizas = [], idx = {};
+    (data.honorarios||[]).forEach(h => {
+      const id = String(h.aseguradora||'').trim().toUpperCase();
+      if (id && idx[id] === undefined){ idx[id] = polizas.length; polizas.push({id, aseguradora:id.split(' ')[0], poliza:id.split(' ').slice(1).join(' ')||id, nivel:'', orden:0}); }
+    });
+    const secciones = [], sIdx = {};
+    const out = data.codigos.map(c => {
+      const sec = c.departamento || c.especialidad || 'Otra';
+      if (sIdx[sec] === undefined){ sIdx[sec] = secciones.length; secciones.push(sec); }
+      return { c: normCode(c.codigo), d: c.descripcion||'', s: sIdx[sec], r:null, a:0, p:[] };
+    });
+    const m = new Map(out.map(o => [o.c, o]));
+    (data.honorarios||[]).forEach(h => {
+      const o = m.get(normCode(h.codigo)); const i = idx[String(h.aseguradora||'').trim().toUpperCase()];
+      if (o && i !== undefined) o.p.push([i, Number(h.precio)||0, Number(h.precio)||0]);
+    });
+    return { ok:true, version:'1-adaptado', generado:null, reglas:{...REGLAS_DEFAULT}, polizas, secciones, codigos:out };
+  }
+
+  function setData(data){
+    DATA = {
+      reglas: { ...REGLAS_DEFAULT, ...(data.reglas||{}) },
+      polizas: data.polizas || [],
+      secciones: data.secciones || [],
+      codigos: (data.codigos || []).map(o => ({ ...o, c: normCode(o.c) })),
+      generado: data.generado || null,
+      version: data.version || ''
+    };
+    byCode = new Map();
+    DATA.codigos.forEach(o => {
+      o._k = fold(o.c + ' ' + o.d + ' ' + (DATA.secciones[o.s]||''));
+      o._pm = new Map(o.p.map(x => [x[0], x]));
+      byCode.set(o.c, o);
+    });
+    renderConfig();
+    renderSections();
+    $('statCodes').textContent = DATA.codigos.length.toLocaleString('es-MX');
+    $('statPol').textContent = DATA.polizas.length;
+    $('footData').textContent = DATA.generado ? 'Datos publicados: ' + fmtDate(DATA.generado) : '';
+    renderAll();
+  }
+
+  async function loadCatalog(force){
+    if (!API_URL || API_URL.includes('PEGA_AQUI')){
+      $('results').innerHTML = stateHtml('⚙','Falta conectar el catálogo','Pega la URL de tu Web App de Apps Script en la constante API_URL.');
+      $('statusText').textContent = 'Sin conectar';
+      return;
+    }
+    const cached = store.get(CACHE_KEY);
+    if (cached && cached.data && !DATA.codigos.length){
+      setData(cached.data);
+      $('statusText').innerHTML = 'Usando datos guardados · actualizando…';
+    } else if (!DATA.codigos.length){
+      $('results').innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+    }
+    try{
+      const res = await fetch(API_URL + (force ? '?refresh=1' : ''), { cache:'no-store' });
+      const raw = await res.json();
+      if (raw.error) throw new Error(raw.error);
+      const data = adaptLegacy(raw);
+      setData(data);
+      store.set(CACHE_KEY, { t: Date.now(), data: raw.version ? raw : data });
+      if (force) toast('Catálogo actualizado');
+    }catch(err){
+      console.error(err);
+      if (DATA.codigos.length){
+        toast('Sin conexión: se muestran los datos guardados');
+        renderResults();
+      } else {
+        $('results').innerHTML = stateHtml('⚠','No se pudo cargar el catálogo','Verifica tu conexión y que la Web App de Apps Script esté implementada con acceso "Cualquier usuario".', '<button class="btn ghost" type="button" data-act="retry">Reintentar</button>');
+        $('statusText').textContent = 'Error de conexión';
+      }
+    }
+  }
+
+  // ---------------- Preferencias globales ----------------
+  function polIndexSelected(){
+    if (!prefs.poliza) return -1;
+    return DATA.polizas.findIndex(p => p.id === prefs.poliza);
+  }
+  function renderConfig(){
+    const sel = $('cfgPoliza');
+    const groups = {};
+    DATA.polizas.forEach((p,i) => { (groups[p.aseguradora] ||= []).push([p,i]); });
+    sel.innerHTML = '<option value="">Promedio de pólizas disponibles</option>' +
+      Object.entries(groups).map(([a,list]) => `<optgroup label="${esc(a)}">` +
+        list.map(([p]) => `<option value="${esc(p.id)}">${esc(a)} · ${esc(p.poliza)}${p.nivel?' ('+esc(cap(p.nivel))+')':''}</option>`).join('') + '</optgroup>').join('');
+    if (prefs.poliza && !DATA.polizas.some(p => p.id === prefs.poliza)) prefs.poliza = '';
+    sel.value = prefs.poliza;
+    $('pacNac').setAttribute('aria-pressed', String(!prefs.internacional));
+    $('pacInt').setAttribute('aria-pressed', String(prefs.internacional));
+    $('cfgPronto').checked = prefs.pronto;
+    $('ppLbl').textContent = '(−' + pct(R().pronto_pago) + ')';
+    $('hintDesc').textContent = 'menos ' + pct(R().descuento);
+    $('multiRuleHint').textContent = `El procedimiento de mayor honorario se paga al ${pct(R().multi_1)}, el segundo al ${pct(R().multi_2)} y del tercero en adelante al ${pct(R().multi_3)}. Los códigos adicionales (+) se pagan completos y no cuentan en el orden.`;
+    const notes = [];
+    if (prefs.internacional) notes.push('Internacional ×' + R().factor_internacional);
+    if (prefs.pronto) notes.push('Pronto pago −' + pct(R().pronto_pago));
+    $('cfgNote').textContent = notes.length ? 'Ajustes: ' + notes.join(' · ') : 'Tarifa nacional';
+  }
+  const cap = s => s ? s.charAt(0) + s.slice(1).toLowerCase() : '';
+  function savePrefs(){ store.set(PREFS_KEY, prefs); renderConfig(); renderAll(); }
+
+  function adjust(base){
+    let v = base, steps = [];
+    if (prefs.internacional){ v *= R().factor_internacional; steps.push(['Tarifa internacional ×' + R().factor_internacional, v]); }
+    if (prefs.pronto){ v *= (1 - R().pronto_pago); steps.push(['Pronto pago −' + pct(R().pronto_pago), v]); }
+    return { value:v, steps };
+  }
+
+  /** Honorario del cirujano para un código según la póliza global (o promedio). */
+  function feeFor(o, polIdx = polIndexSelected()){
+    if (!o || !o.p.length) return null;
+    if (polIdx >= 0){ const x = o._pm.get(polIdx); return x ? { fee:x[2], tarifa:x[1], n:1, label:DATA.polizas[polIdx].id } : null; }
+    const fee = o.p.reduce((s,x) => s + x[2], 0) / o.p.length;
+    return { fee, tarifa:null, n:o.p.length, label:`promedio de ${o.p.length} póliza${o.p.length===1?'':'s'}` };
+  }
+  function asegsOf(o){ return [...new Set(o.p.map(x => DATA.polizas[x[0]]?.aseguradora).filter(Boolean))]; }
+
+  // ---------------- Búsqueda ----------------
+  function search(q, limit){
+    const terms = fold(q).split(/\s+/).filter(Boolean);
+    const sec = limit ? '' : $('secSelect').value;
+    const only = limit ? false : $('onlyPriced').checked;
+    const pi = polIndexSelected();
+    let res = DATA.codigos.filter(o =>
+      (sec === '' || String(o.s) === sec) &&
+      (!only || (pi >= 0 ? o._pm.has(pi) : o.p.length > 0)) &&
+      terms.every(t => o._k.includes(t)));
+    const qc = normCode(q);
+    if (limit) {
+      // para el autocompletado: prioriza coincidencia exacta / prefijo de código
+      res.sort((a,b) => rank(a) - rank(b));
+      function rank(o){ return o.c === qc ? 0 : o.c.startsWith(qc) ? 1 : 2; }
+      return res.slice(0, limit);
+    }
+    const sort = $('sortSelect').value;
+    if (sort !== 'code'){
+      const f = o => feeFor(o)?.fee ?? null;
+      res = res.map(o => [o, f(o)]).sort((a,b) => {
+        if (a[1] === null) return b[1] === null ? 0 : 1;
+        if (b[1] === null) return -1;
+        return sort === 'feeDesc' ? b[1] - a[1] : a[1] - b[1];
+      }).map(x => x[0]);
+    } else if (qc && /^\d/.test(qc)) {
+      res.sort((a,b) => (b.c.startsWith(qc) - a.c.startsWith(qc)) || a.c.localeCompare(b.c,'es',{numeric:true}));
+    }
+    return res;
+  }
+
+  function highlight(text, q){
+    let html = esc(text);
+    const terms = fold(q).split(/\s+/).filter(t => t.length > 1);
+    if (!terms.length) return html;
+    // resalta respetando acentos: construye regex sobre el texto plegado
+    const plain = String(text), folded = fold(plain);
+    const marks = new Array(plain.length).fill(false);
+    terms.forEach(t => { let i = folded.indexOf(t); while (i >= 0){ for (let k=i;k<i+t.length;k++) marks[k]=true; i = folded.indexOf(t, i+1); } });
+    if (folded.length !== plain.length) return html; // seguridad si la normalización cambió la longitud
+    let out = '', open = false;
+    for (let i=0;i<plain.length;i++){
+      if (marks[i] && !open){ out += '<mark>'; open = true; }
+      if (!marks[i] && open){ out += '</mark>'; open = false; }
+      out += esc(plain[i]);
+    }
+    return out + (open ? '</mark>' : '');
+  }
+
+  function renderSections(){
+    const sel = $('secSelect'), cur = sel.value;
+    const counts = new Array(DATA.secciones.length).fill(0);
+    DATA.codigos.forEach(o => counts[o.s]++);
+    const opts = DATA.secciones.map((s,i) => [s,i]).sort((a,b) => a[0].localeCompare(b[0],'es'));
+    sel.innerHTML = '<option value="">Todas las secciones</option>' + opts.map(([s,i]) => `<option value="${i}">${esc(s)} (${counts[i].toLocaleString('es-MX')})</option>`).join('');
+    sel.value = cur;
+  }
+
+  function renderResults(){
+    const q = $('searchInput').value.trim();
+    const res = search(q);
+    const total = DATA.codigos.length;
+    $('statusText').innerHTML = total ? `<b>${res.length.toLocaleString('es-MX')}</b> de <b>${total.toLocaleString('es-MX')}</b> códigos` + (polIndexSelected()>=0 ? ` · honorario ${esc(DATA.polizas[polIndexSelected()].id)}` : ' · honorario promedio') : 'El catálogo aún no tiene códigos cargados';
+    if (!res.length){
+      $('results').innerHTML = stateHtml('🔍','Sin resultados','No se encontró ningún código con esos criterios. Prueba con otra palabra o quita filtros.' , q ? requestFormHtml(normCode(q).match(/^\d{4,5}[A-Z]?$/) ? normCode(q) : '') : '');
+      $('moreWrap').hidden = true; return;
+    }
+    const slice = res.slice(0, shown);
+    $('results').innerHTML = slice.map(o => cardHtml(o, q)).join('');
+    $('moreWrap').hidden = res.length <= shown;
+    $('moreBtn').textContent = `Mostrar más (${(res.length - shown).toLocaleString('es-MX')} restantes)`;
+  }
+
+  function cardHtml(o, q){
+    const f = feeFor(o);
+    const fee = f ? adjust(f.fee).value : null;
+    const asegs = asegsOf(o);
+    return `<button class="card${f?'':' noprice'}" type="button" data-code="${esc(o.c)}">
+      <span class="card-tab"></span>
+      <span class="card-body">
+        <span class="card-main">
+          <span class="card-top">
+            <span class="code">${highlight(o.c, q)}</span>
+            ${o.a ? '<span class="badge addon" title="Código adicional: se cobra completo">Adicional +</span>' : ''}
+            <span class="badge sec">${esc(DATA.secciones[o.s]||'')}</span>
+            ${asegs.map(a => `<span class="badge aseg">${esc(a)}</span>`).join('')}
+          </span>
+          <span class="desc" style="display:block">${highlight(o.d, q)}</span>
+        </span>
+        <span class="card-price">
+          ${f ? `<span class="amt">${money(fee)}</span><br><span class="lbl">Cirujano · ${esc(f.label)}</span>` : `<span class="na">Sin tarifa en ${esc(DATA.polizas[polIndexSelected()]?.id || 'el tabulador')}</span>`}
+        </span>
+      </span>
+    </button>`;
+  }
+
+  function stateHtml(icon, title, text, extra=''){
+    return `<div class="state"><div class="state-icon" aria-hidden="true">${icon}</div><h3>${esc(title)}</h3><p>${esc(text)}</p>${extra}</div>`;
+  }
+
+  function requestFormHtml(code){
+    return `<form class="req" data-form="req">
+      <p class="hint" style="margin:0">¿Falta un código? Solicita que se agregue al catálogo.</p>
+      <input name="codigo" placeholder="Código CPT" value="${esc(code)}" required maxlength="20">
+      <input name="comentario" placeholder="Comentario (procedimiento, médico, aseguradora…)" maxlength="300">
+      <input name="usuario" placeholder="Tu nombre o área" maxlength="80">
+      <button class="btn small" type="submit">Enviar solicitud</button>
+    </form>`;
+  }
+
+  async function sendRequest(form){
+    const fd = new FormData(form);
+    const body = { tipo:'solicitud', codigo: fd.get('codigo'), comentario: fd.get('comentario'), usuario: fd.get('usuario') };
+    const btn = form.querySelector('button'); btn.disabled = true; btn.textContent = 'Enviando…';
+    try{
+      const res = await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(body) });
+      const j = await res.json();
+      if (!j.ok) throw new Error(j.error || 'Error');
+      form.outerHTML = '<p class="okmsg">Solicitud enviada. Capital Humano la revisará.</p>';
+    }catch(e){
+      btn.disabled = false; btn.textContent = 'Enviar solicitud';
+      toast('No se pudo enviar. Revisa que el Apps Script tenga la versión 2.0.');
+    }
+  }
+
+  // ---------------- Detalle (modal) ----------------
+  let lastFocus = null;
+  function openDetail(code){
+    const o = byCode.get(normCode(code)); if (!o) return;
+    lastFocus = document.activeElement;
+    $('mTop').innerHTML = `<span class="code">${esc(o.c)}</span>${o.a ? '<span class="badge addon">Adicional +</span>' : ''}<span class="badge sec" style="background:rgba(255,255,255,.12);color:#E5E9EF">${esc(DATA.secciones[o.s]||'')}</span>`;
+    $('mTitle').textContent = o.d;
+    const pi = polIndexSelected();
+    const adjLbl = adjust(1).steps.map(s => s[0]).join(' · ');
+    const hasAdj = !!adjLbl;
+    let rows = '', lastA = '';
+    DATA.polizas.forEach((p,i) => {
+      if (p.aseguradora !== lastA){ rows += `<tr class="grp"><td colspan="${hasAdj?4:3}">${esc(p.aseguradora)}</td></tr>`; lastA = p.aseguradora; }
+      const x = o._pm.get(i);
+      rows += x ? `<tr class="${i===pi?'picked':''}"><td>${esc(p.poliza)} <span class="lvl">${esc(cap(p.nivel))}</span></td><td class="num col-tab">${money(x[1])}</td><td class="num">${hasAdj ? money(x[2]) : '<b>'+money(x[2])+'</b>'}</td>${hasAdj ? `<td class="num"><b>${money(adjust(x[2]).value)}</b></td>` : ''}</tr>`
+               : `<tr class="na"><td>${esc(p.poliza)} <span class="lvl">${esc(cap(p.nivel))}</span></td><td class="num" colspan="${hasAdj?3:2}">Sin tarifa</td></tr>`;
+    });
+    const roles = o.r ? ROLES.map(r => `<span class="chip${o.r[r.flag] ? ' on' : ''}">${o.r[r.flag] ? '✓' : '—'} ${esc(r.label)}</span>`).join('') + (o.r[4] ? '<span class="chip on">✓ BEC</span>' : '')
+                      : '<span class="hint" style="margin:0">El tabulador no indica qué roles aplican para este código.</span>';
+    $('mBody').innerHTML = `
+      <h4 style="margin-top:0">Roles que aplican (según tabulador AXA)</h4>
+      <div class="chips">${roles}</div>
+      <h4>Tarifas por aseguradora y póliza</h4>
+      <div style="overflow-x:auto"><table>
+        <thead><tr><th>Póliza</th><th class="num col-tab">Tabulador</th><th class="num">Cirujano (−${pct(R().descuento)})</th>${hasAdj ? '<th class="num">Con ajustes</th>' : ''}</tr></thead>
+        <tbody>${rows}</tbody></table></div>
+      <p class="hint">${hasAdj ? '“Con ajustes”: ' + esc(adjLbl) + '. ' : 'Tarifa nacional. '}Los ajustes (internacional, pronto pago) se cambian en la barra superior.</p>
+      <div class="modal-actions">
+        <button class="btn" type="button" data-act="calc" data-code="${esc(o.c)}">Calcular honorarios del equipo</button>
+        <button class="btn ghost" type="button" data-act="addmulti" data-code="${esc(o.c)}">+ Agregar a cirugía con varios códigos</button>
+        <button class="btn ghost" type="button" data-act="copy" data-code="${esc(o.c)}">Copiar</button>
+      </div>`;
+    $('modalBg').classList.add('open'); $('modalBg').setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+    $('mClose').focus();
+    history.replaceState(null, '', '#cpt=' + encodeURIComponent(o.c));
+  }
+  function closeDetail(){
+    $('modalBg').classList.remove('open'); $('modalBg').setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+    if (location.hash.startsWith('#cpt=')) history.replaceState(null, '', location.pathname + location.search);
+    if (lastFocus) lastFocus.focus();
+  }
+
+  function copySummary(code){
+    const o = byCode.get(code); if (!o) return;
+    const lines = [`CPT ${o.c} — ${o.d}`, DATA.secciones[o.s]||''];
+    DATA.polizas.forEach((p,i) => { const x = o._pm.get(i); if (x) lines.push(`${p.id}: tabulador ${money(x[1])} · cirujano ${money(x[2])}`); });
+    navigator.clipboard?.writeText(lines.join('\n')).then(() => toast('Copiado al portapapeles'), () => toast('No se pudo copiar'));
+  }
+
+  // ---------------- Autocompletado ----------------
+  function setupAC(input, list, onPick){
+    let items = [], active = -1;
+    const draw = () => {
+      const q = input.value.trim();
+      if (!q || !DATA.codigos.length){ close(); return; }
+      items = search(q, 8);
+      if (!items.length){ list.innerHTML = '<div class="ac-item" aria-disabled="true"><span>Sin coincidencias</span></div>'; open(); return; }
+      active = 0;
+      list.innerHTML = items.map((o,i) => `<div class="ac-item" role="option" id="${list.id}-${i}" aria-selected="${i===active}" data-i="${i}"><span class="mono">${esc(o.c)}</span><span>${esc(o.d)}</span></div>`).join('');
+      open();
+    };
+    const open = () => { list.classList.add('open'); input.setAttribute('aria-expanded','true'); };
+    const close = () => { list.classList.remove('open'); input.setAttribute('aria-expanded','false'); active = -1; };
+    const mark = () => list.querySelectorAll('.ac-item').forEach((el,i) => { el.setAttribute('aria-selected', String(i===active)); if (i===active) el.scrollIntoView({block:'nearest'}); });
+    const pick = i => { const o = items[i]; if (!o) return; close(); onPick(o); };
+    input.addEventListener('input', debounce(draw, 90));
+    input.addEventListener('focus', () => { if (input.value.trim()) draw(); });
+    input.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown'){ e.preventDefault(); if (!list.classList.contains('open')) draw(); active = Math.min(active+1, items.length-1); mark(); }
+      else if (e.key === 'ArrowUp'){ e.preventDefault(); active = Math.max(active-1, 0); mark(); }
+      else if (e.key === 'Enter'){
+        e.preventDefault();
+        const exact = byCode.get(normCode(input.value));
+        if (exact){ close(); onPick(exact); } else if (active >= 0 && items[active]) pick(active);
+        else if (input.value.trim()) toast('“' + input.value.trim() + '” no está en el catálogo');
+      }
+      else if (e.key === 'Escape'){ close(); }
+    });
+    list.addEventListener('mousedown', e => { const el = e.target.closest('[data-i]'); if (el){ e.preventDefault(); pick(+el.dataset.i); } });
+    input.addEventListener('blur', () => setTimeout(close, 120));
+  }
+
+  // ---------------- Calcular honorarios ----------------
+  function selectPayCode(code){
+    payCode = code; payChecked = null; payRoles = null; payNeg = '';
+    $('payInput').value = code;
+    renderPay();
+  }
+
+  function renderPay(){
+    const out = $('payOut');
+    if (!payCode){
+      out.innerHTML = `<div class="state"><div class="state-icon" aria-hidden="true">🧮</div><h3>Elige un código</h3><p>Busca un código CPT para ver las tarifas por aseguradora y el desglose del equipo quirúrgico.</p></div>` + teamBoxHtml();
+      bindTeam(); return;
+    }
+    const o = byCode.get(payCode);
+    if (!o){ out.innerHTML = `<p class="warn">El código ${esc(payCode)} no está en el catálogo.</p>` + `<div class="box" style="margin-top:12px">${requestFormHtml(payCode)}</div>`; return; }
+    if (!o.p.length){ out.innerHTML = `<p class="warn">El código ${esc(o.c)} no tiene tarifas registradas.</p>`; return; }
+
+    const pi = polIndexSelected();
+    if (!payChecked){
+      payChecked = new Set(pi >= 0 && o._pm.has(pi) ? [pi] : o.p.map(x => x[0]));
+    }
+    if (!payRoles){
+      payRoles = new Set(ROLES.filter(r => r.key === 'cir' || !o.r || o.r[r.flag]).map(r => r.key));
+      if (!o.r) payRoles.delete('ay2');
+    }
+    const sel = o.p.filter(x => payChecked.has(x[0]));
+    const baseTab = sel.length ? sel.reduce((s,x) => s + x[2], 0) / sel.length : 0;
+    const neg = parseFloat(String(payNeg).replace(/[^0-9.]/g,''));
+    const useNeg = isFinite(neg) && neg > 0;
+    const base = useNeg ? neg : baseTab;
+    const adj = adjust(base);
+    const cir = adj.value;
+    const rolesHtml = ROLES.map(r => {
+      const on = payRoles.has(r.key);
+      const amount = cir * R()[r.regla] / R().pct_cirujano;
+      const tag = o.r ? (o.r[r.flag] ? '' : ' <span class="hint" style="display:inline;margin:0">(el tabulador no lo indica)</span>') : '';
+      return `<div class="role${on?'':' off'}"><label><input type="checkbox" data-role="${r.key}" ${on?'checked':''} ${r.key==='cir'?'disabled':''}> ${esc(r.label)} <span class="pct">${pct(R()[r.regla])}</span>${tag}</label><span class="amt">${money(amount)}</span></div>`;
+    }).join('');
+    const totalTeam = ROLES.filter(r => payRoles.has(r.key)).reduce((s,r) => s + cir * R()[r.regla] / R().pct_cirujano, 0);
+
+    let rows = '', lastA = '';
+    DATA.polizas.forEach((p,i) => {
+      const x = o._pm.get(i); if (!x) return;
+      if (p.aseguradora !== lastA){ rows += `<tr class="grp"><td colspan="3">${esc(p.aseguradora)}</td></tr>`; lastA = p.aseguradora; }
+      rows += `<tr class="${payChecked.has(i)?'picked':''}"><td><label style="display:flex;gap:8px;align-items:center;cursor:pointer"><input type="checkbox" data-pol="${i}" ${payChecked.has(i)?'checked':''} style="accent-color:var(--navy-700)"> ${esc(p.poliza)} <span class="lvl">${esc(cap(p.nivel))}</span></label></td><td class="num">${money(x[1])}</td><td class="num">${money(x[2])}</td></tr>`;
+    });
+
+    const tabLbl = sel.length === 1 ? DATA.polizas[sel[0][0]].id : `promedio de ${sel.length} pólizas`;
+    out.innerHTML = `
+      <div class="calc-grid">
+        <div>
+          <div class="box">
+            <div class="sel-code"><span class="code">${esc(o.c)}</span>${o.a ? '<span class="badge addon">Adicional +</span>' : ''}</div>
+            <p class="desc">${esc(o.d)}</p>
+            <p class="hint" style="margin-top:4px">${esc(DATA.secciones[o.s]||'')}</p>
+            <h4>Pólizas incluidas en el cálculo</h4>
+            <div class="row" style="gap:8px;margin-bottom:6px">
+              <button class="linkbtn" type="button" data-act="polall">Todas</button>
+              <button class="linkbtn" type="button" data-act="polnone">Ninguna</button>
+              ${pi >= 0 && o._pm.has(pi) ? `<button class="linkbtn" type="button" data-act="polcfg">Solo ${esc(DATA.polizas[pi].id)}</button>` : ''}
+            </div>
+            <div style="overflow-x:auto"><table>
+              <thead><tr><th>Póliza</th><th class="num">Tabulador</th><th class="num">Cirujano</th></tr></thead>
+              <tbody>${rows}</tbody></table></div>
+            ${pi >= 0 && !o._pm.has(pi) ? `<p class="note">Este código no tiene tarifa en ${esc(DATA.polizas[pi].id)}; se usan las pólizas disponibles.</p>` : ''}
+          </div>
+        </div>
+        <div>
+          <div class="summary">
+            <p class="label">Honorario del cirujano</p>
+            <p class="amount">${sel.length || useNeg ? money(cir) : '—'}</p>
+            <p class="meta">${useNeg ? 'Honorario negociado capturado' : (sel.length ? 'Tabulador ' + esc(tabLbl) + ' −' + pct(R().descuento) : 'Selecciona al menos una póliza')}</p>
+            ${adj.steps.length ? `<div class="adj"><div><span>Base</span><span class="mono">${money(base)}</span></div>${adj.steps.map(s => `<div><span>${esc(s[0])}</span><span class="mono">${money(s[1])}</span></div>`).join('')}</div>` : ''}
+          </div>
+          <div class="box roles">
+            <h3>Equipo quirúrgico</h3>
+            ${rolesHtml}
+            <div class="role total"><span>Total equipo</span><span class="amt">${money(totalTeam)}</span></div>
+            ${!o.r ? '<p class="note">Este tabulador no indica qué roles aplican; marca los que participaron.</p>' : ''}
+            <h4>Honorario negociado (opcional)</h4>
+            <div class="inline-input"><input class="input" id="negInput" inputmode="decimal" placeholder="$ cirujano" value="${esc(payNeg)}"><span class="hint" style="margin:0">Reemplaza al tabulador</span></div>
+            ${useNeg && sel.length ? (() => { const d = neg - baseTab; return `<p class="hint">Diferencia contra tabulador: <span class="diff ${d>=0?'up':'down'}">${d>=0?'+':'−'}${money(Math.abs(d))} (${d>=0?'+':'−'}${pct(Math.abs(d)/baseTab)})</span></p>`; })() : ''}
+            <div class="modal-actions">
+              <button class="btn" type="button" data-act="printpay">Imprimir hoja de honorarios</button>
+              <button class="btn ghost" type="button" data-act="addmulti" data-code="${esc(o.c)}">+ Agregar a cirugía</button>
+            </div>
+          </div>
+        </div>
+      </div>` + teamBoxHtml();
+
+    out.querySelectorAll('[data-pol]').forEach(ch => ch.addEventListener('change', () => { const i = +ch.dataset.pol; ch.checked ? payChecked.add(i) : payChecked.delete(i); renderPay(); }));
+    out.querySelectorAll('[data-role]').forEach(ch => ch.addEventListener('change', () => { ch.checked ? payRoles.add(ch.dataset.role) : payRoles.delete(ch.dataset.role); renderPay(); }));
+    const ni = $('negInput');
+    ni.addEventListener('change', () => { payNeg = ni.value; renderPay(); });
+    ni.addEventListener('keydown', e => { if (e.key === 'Enter'){ payNeg = ni.value; renderPay(); } });
+    bindTeam();
+    payState = { o, sel, base, adj, cir, totalTeam, useNeg, tabLbl };
+  }
+  let payState = null;
+
+  function teamBoxHtml(){
+    const t = parseFloat(String(teamTotal).replace(/[^0-9.]/g,''));
+    const ok = isFinite(t) && t > 0;
+    const c = ok ? t / R().divisor_equipo : 0;
+    return `<details class="box" style="margin-top:16px" ${teamTotal ? 'open' : ''}>
+      <summary>Precio por equipo quirúrgico completo</summary>
+      <p class="hint">Cuando el médico da un solo precio por todo el equipo: cirujano = total ÷ ${R().divisor_equipo}, y de ahí ${pct(R().pct_anestesiologo)} anestesiólogo y ${pct(R().pct_ayudante1)} 1er ayudante.</p>
+      <div class="inline-input"><input class="input" id="teamInput" inputmode="decimal" placeholder="$ total del equipo" value="${esc(teamTotal)}"></div>
+      ${ok ? `<div class="roles" style="margin-top:8px">
+        <div class="role"><span>Cirujano</span><span class="amt">${money(c)}</span></div>
+        <div class="role"><span>Anestesiólogo</span><span class="amt">${money(c*R().pct_anestesiologo)}</span></div>
+        <div class="role"><span>1er Ayudante</span><span class="amt">${money(c*R().pct_ayudante1)}</span></div>
+        <div class="role total"><span>Total</span><span class="amt">${money(c*(1+R().pct_anestesiologo+R().pct_ayudante1))}</span></div></div>` : ''}
+    </details>`;
+  }
+  function bindTeam(){
+    const ti = $('teamInput'); if (!ti) return;
+    const upd = () => { teamTotal = ti.value; const pos = ti.selectionStart; renderPay(); const n = $('teamInput'); if (n){ n.focus(); try{ n.setSelectionRange(pos,pos);}catch(e){} } };
+    ti.addEventListener('input', debounce(upd, 350));
+  }
+
+  // ---------------- Varios códigos ----------------
+  function addMulti(code){
+    code = normCode(code);
+    if (!code) return;
+    if (multi.some(m => m.c === code)){ toast(code + ' ya está en la lista'); return; }
+    multi.push({ c: code });
+    store.set(MULTI_KEY, multi);
+    renderMulti(); updateMultiCount();
+    toast(code + ' agregado a la cirugía');
+  }
+  function updateMultiCount(){ const el = $('multiCount'); el.textContent = multi.length; el.hidden = !multi.length; }
+
+  function computeMulti(){
+    const pi = polIndexSelected();
+    const items = multi.map((m, idx) => {
+      const o = byCode.get(m.c);
+      const f = o ? feeFor(o, pi) : null;
+      return { idx, c:m.c, o, base: f ? f.fee : null, label: f ? f.label : '' };
+    });
+    const ranked = items.filter(x => x.base !== null && !x.o.a).sort((a,b) => b.base - a.base);
+    ranked.forEach((x,i) => { x.rank = i; x.pct = i === 0 ? R().multi_1 : i === 1 ? R().multi_2 : R().multi_3; });
+    items.filter(x => x.base !== null && x.o.a).forEach(x => { x.rank = 'a'; x.pct = 1; });
+    const priced = items.filter(x => x.base !== null).sort((a,b) => (a.rank==='a') - (b.rank==='a') || (a.rank - b.rank));
+    const missing = items.filter(x => x.base === null);
+    const subtotal = priced.reduce((s,x) => s + x.base * x.pct, 0);
+    const adj = adjust(subtotal);
+    return { priced, missing, subtotal, adj, pi };
+  }
+
+  function renderMulti(){
+    const out = $('multiOut');
+    if (!multi.length){
+      out.innerHTML = stateHtml('🩺','Agrega los códigos de la cirugía','Busca cada código arriba y presiona Enter. El orden de cobro se calcula automáticamente.');
+      return;
+    }
+    const m = computeMulti();
+    const orderLbl = x => x.rank === 'a' ? ['Adicional +','oa'] : x.rank === 0 ? ['Primario','o1'] : x.rank === 1 ? ['Secundario','o2'] : [`#${x.rank+1} · Terciario+`,'o3'];
+    const cards = m.priced.map(x => { const [l,c] = orderLbl(x); return `
+      <div class="proc">
+        <div class="proc-info">
+          <span class="order ${c}">${l}</span> <span class="code" style="font-size:13.5px">${esc(x.c)}</span>
+          <p class="desc" title="${esc(x.o.d)}">${esc(x.o.d)}</p>
+          <div class="proc-base">Honorario base ${money(x.base)} · ${esc(x.label)}</div>
+        </div>
+        <div class="proc-final">${money(x.base * x.pct)}<small>${pct(x.pct)}</small></div>
+        <button class="icon-btn" type="button" data-rm="${esc(x.c)}" aria-label="Quitar ${esc(x.c)}">&times;</button>
+      </div>`; }).join('');
+    const miss = m.missing.map(x => `
+      <div class="proc">
+        <div class="proc-info"><span class="order ox">Sin tarifa</span> <span class="code" style="font-size:13.5px">${esc(x.c)}</span>
+          <p class="desc">${x.o ? esc(x.o.d) : 'No está en el catálogo'}</p>
+          <div class="proc-base">${x.o ? 'Sin tarifa en ' + esc(m.pi>=0 ? DATA.polizas[m.pi].id : 'el tabulador') + ' — no suma al total' : 'No suma al total'}</div></div>
+        <button class="icon-btn" type="button" data-rm="${esc(x.c)}" aria-label="Quitar ${esc(x.c)}">&times;</button>
+      </div>`).join('');
+    const cir = m.adj.value;
+    const anyAy2 = m.priced.some(x => x.o.r && x.o.r[3]);
+    const ay2 = multiAy2 || anyAy2;
+    const team = [
+      ['Cirujano', cir],
+      ['Anestesiólogo', cir * R().pct_anestesiologo],
+      ['1er Ayudante', cir * R().pct_ayudante1],
+    ];
+    if (ay2) team.push(['2do Ayudante', cir * R().pct_ayudante2]);
+    const teamTot = team.reduce((s,t) => s + t[1], 0);
+    out.innerHTML = `
+      <div class="calc-grid">
+        <div>
+          ${cards}${miss}
+          <div class="row" style="justify-content:space-between;margin-top:6px">
+            <span class="hint" style="margin:0">Pólizas: ${esc(m.pi>=0 ? DATA.polizas[m.pi].id : 'promedio de las disponibles por código')}</span>
+            <button class="linkbtn" type="button" data-act="clearmulti">Vaciar lista</button>
+          </div>
+        </div>
+        <div>
+          <div class="summary">
+            <p class="label">Total cirujano · ${m.priced.length} procedimiento${m.priced.length===1?'':'s'}</p>
+            <p class="amount">${money(cir)}</p>
+            <p class="meta">Regla ${pct(R().multi_1)} / ${pct(R().multi_2)} / ${pct(R().multi_3)}; adicionales al 100%</p>
+            ${m.adj.steps.length ? `<div class="adj"><div><span>Subtotal</span><span class="mono">${money(m.subtotal)}</span></div>${m.adj.steps.map(s => `<div><span>${esc(s[0])}</span><span class="mono">${money(s[1])}</span></div>`).join('')}</div>` : ''}
+          </div>
+          <div class="box roles">
+            <h3>Equipo quirúrgico</h3>
+            ${team.map(t => `<div class="role"><span>${esc(t[0])}</span><span class="amt">${money(t[1])}</span></div>`).join('')}
+            <div class="role total"><span>Total equipo</span><span class="amt">${money(teamTot)}</span></div>
+            ${anyAy2 ? '' : `<label class="switch" style="margin-top:8px"><input type="checkbox" id="ay2Toggle" ${multiAy2?'checked':''}> Incluir 2do ayudante (${pct(R().pct_ayudante2)})</label>`}
+            ${m.missing.length ? `<p class="warn">${m.missing.length} código${m.missing.length===1?'':'s'} sin tarifa no ${m.missing.length===1?'está':'están'} incluido${m.missing.length===1?'':'s'} en el total.</p>` : ''}
+            <div class="modal-actions"><button class="btn" type="button" data-act="printmulti">Imprimir hoja de honorarios</button></div>
+          </div>
+        </div>
+      </div>`;
+    const t = $('ay2Toggle'); if (t) t.addEventListener('change', () => { multiAy2 = t.checked; renderMulti(); });
+    multiState = { m, team, teamTot };
+  }
+  let multiState = null;
+
+  // ---------------- Impresión ----------------
+  function printSheet(kind){
+    const now = new Date();
+    const folio = 'CPT-' + now.toISOString().slice(0,10).replace(/-/g,'') + '-' + String(now.getHours()).padStart(2,'0') + String(now.getMinutes()).padStart(2,'0');
+    const adjTxt = adjust(1).steps.map(s => s[0]).join(' · ') || 'Tarifa nacional';
+    let body = '';
+    if (kind === 'pay' && payState){
+      const s = payState;
+      body = `<table><thead><tr><th>CPT</th><th>Descripción</th><th class="num">Honorario base</th></tr></thead>
+        <tbody><tr><td>${esc(s.o.c)}</td><td>${esc(s.o.d)}</td><td class="num">${money(s.base)}</td></tr></tbody></table>
+        <p>Fuente: ${s.useNeg ? 'honorario negociado' : 'tabulador ' + esc(s.tabLbl) + ' −' + pct(R().descuento)} · Ajustes: ${esc(adjTxt)}</p>
+        <table><thead><tr><th>Rol</th><th class="num">%</th><th class="num">Importe</th></tr></thead><tbody>
+        ${ROLES.filter(r => payRoles.has(r.key)).map(r => `<tr><td>${esc(r.label)}</td><td class="num">${pct(R()[r.regla])}</td><td class="num">${money(s.cir * R()[r.regla] / R().pct_cirujano)}</td></tr>`).join('')}
+        </tbody></table><div class="p-total"><span>Total equipo quirúrgico</span><span>${money(s.totalTeam)}</span></div>`;
+    } else if (kind === 'multi' && multiState){
+      const { m, team, teamTot } = multiState;
+      body = `<table><thead><tr><th>Orden</th><th>CPT</th><th>Descripción</th><th class="num">Base</th><th class="num">%</th><th class="num">Importe</th></tr></thead><tbody>
+        ${m.priced.map(x => `<tr><td>${x.rank==='a'?'Adicional':x.rank+1}</td><td>${esc(x.c)}</td><td>${esc(x.o.d)}</td><td class="num">${money(x.base)}</td><td class="num">${pct(x.pct)}</td><td class="num">${money(x.base*x.pct)}</td></tr>`).join('')}
+        ${m.missing.map(x => `<tr><td>—</td><td>${esc(x.c)}</td><td>Sin tarifa (no incluido)</td><td></td><td></td><td></td></tr>`).join('')}
+        </tbody></table>
+        <p>Pólizas: ${esc(m.pi>=0 ? DATA.polizas[m.pi].id : 'promedio de las disponibles')} · Ajustes: ${esc(adjTxt)}</p>
+        <table><thead><tr><th>Rol</th><th class="num">Importe</th></tr></thead><tbody>${team.map(t => `<tr><td>${esc(t[0])}</td><td class="num">${money(t[1])}</td></tr>`).join('')}</tbody></table>
+        <div class="p-total"><span>Total equipo quirúrgico</span><span>${money(teamTot)}</span></div>`;
+    } else return;
+    $('printArea').innerHTML = `
+      <div class="p-head"><div><h2>Cálculo de honorarios médicos (CPT)</h2><p>Grupo Saint Luke's Hospitals</p></div>
+      <div style="text-align:right"><p><b>Folio:</b> ${folio}</p><p><b>Fecha:</b> ${now.toLocaleDateString('es-MX')}</p></div></div>
+      <div class="p-fields"><div>Paciente:</div><div>No. de expediente:</div><div>Médico tratante:</div><div>Fecha de cirugía:</div><div>Aseguradora / póliza del paciente:</div><div>No. de autorización:</div></div>
+      ${body}
+      <div class="p-sign"><div>Realizó auditoría de ingresos</div><div>Revisión por Contraloría</div><div>Revisión por Dirección Médica</div><div>Autorización por Dirección General</div></div>
+      <p class="p-foot">Honorarios calculados con los tabuladores vigentes en el Catálogo CPT${DATA.generado ? ' (datos del ' + fmtDate(DATA.generado) + ')' : ''}. Documento de uso interno; sujeto a la autorización de la aseguradora.</p>`;
+    window.print();
+  }
+
+  // ---------------- Tabs ----------------
+  function showTab(name, focus){
+    document.querySelectorAll('.tab-btn').forEach(b => { const on = b.dataset.tab === name; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('visible', p.id === 'panel-' + name));
+  }
+  document.querySelector('.tabs').addEventListener('click', e => { const b = e.target.closest('.tab-btn'); if (b) showTab(b.dataset.tab); });
+  document.querySelector('.tabs').addEventListener('keydown', e => {
+    if (!['ArrowLeft','ArrowRight'].includes(e.key)) return;
+    const tabs = [...document.querySelectorAll('.tab-btn')]; const i = tabs.findIndex(t => t.getAttribute('aria-selected') === 'true');
+    const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; showTab(n.dataset.tab, true);
+  });
+
+  // ---------------- Eventos globales ----------------
+  function renderAll(){ shown = PAGE; renderResults(); renderPay(); renderMulti(); }
+
+  $('cfgPoliza').addEventListener('change', e => { prefs.poliza = e.target.value; payChecked = null; savePrefs(); });
+  $('pacNac').addEventListener('click', () => { prefs.internacional = false; savePrefs(); });
+  $('pacInt').addEventListener('click', () => { prefs.internacional = true; savePrefs(); });
+  $('cfgPronto').addEventListener('change', e => { prefs.pronto = e.target.checked; savePrefs(); });
+
+  $('searchInput').addEventListener('input', debounce(() => { shown = PAGE; renderResults(); }, 120));
+  $('secSelect').addEventListener('change', () => { shown = PAGE; renderResults(); });
+  $('sortSelect').addEventListener('change', () => { shown = PAGE; renderResults(); });
+  $('onlyPriced').addEventListener('change', () => { shown = PAGE; renderResults(); });
+  $('moreBtn').addEventListener('click', () => { shown += PAGE; renderResults(); });
+  $('refreshBtn').addEventListener('click', () => loadCatalog(true));
+
+  document.addEventListener('click', e => {
+    const card = e.target.closest('.card[data-code]');
+    if (card){ openDetail(card.dataset.code); return; }
+    const a = e.target.closest('[data-act]');
+    if (a){
+      const act = a.dataset.act, code = a.dataset.code;
+      if (act === 'calc'){ closeDetail(); selectPayCode(code); showTab('pago'); window.scrollTo({top:0}); }
+      else if (act === 'addmulti'){ addMulti(code); }
+      else if (act === 'copy'){ copySummary(code); }
+      else if (act === 'retry'){ loadCatalog(true); }
+      else if (act === 'polall'){ payChecked = new Set(byCode.get(payCode).p.map(x => x[0])); renderPay(); }
+      else if (act === 'polnone'){ payChecked = new Set(); renderPay(); }
+      else if (act === 'polcfg'){ payChecked = new Set([polIndexSelected()]); renderPay(); }
+      else if (act === 'printpay'){ printSheet('pay'); }
+      else if (act === 'printmulti'){ printSheet('multi'); }
+      else if (act === 'clearmulti'){ if (confirm('¿Vaciar la lista de códigos?')){ multi = []; store.set(MULTI_KEY, multi); renderMulti(); updateMultiCount(); } }
+      return;
+    }
+    const rm = e.target.closest('[data-rm]');
+    if (rm){ multi = multi.filter(m => m.c !== rm.dataset.rm); store.set(MULTI_KEY, multi); renderMulti(); updateMultiCount(); }
+  });
+  document.addEventListener('submit', e => { const f = e.target.closest('[data-form="req"]'); if (f){ e.preventDefault(); sendRequest(f); } });
+
+  $('mClose').addEventListener('click', closeDetail);
+  $('modalBg').addEventListener('click', e => { if (e.target === $('modalBg')) closeDetail(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && $('modalBg').classList.contains('open')) closeDetail();
+    if (e.key === 'Tab' && $('modalBg').classList.contains('open')){
+      const f = [...$('modalBg').querySelectorAll('button,[href],input,select')].filter(x => !x.disabled);
+      if (!f.length) return;
+      if (e.shiftKey && document.activeElement === f[0]){ e.preventDefault(); f[f.length-1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length-1]){ e.preventDefault(); f[0].focus(); }
+    }
+    if (e.key === '/' && !/input|textarea|select/i.test(document.activeElement.tagName)){ e.preventDefault(); showTab('buscar'); $('searchInput').focus(); }
+  });
+
+  setupAC($('payInput'), $('payAc'), o => selectPayCode(o.c));
+  setupAC($('multiInput'), $('multiAc'), o => { addMulti(o.c); $('multiInput').value = ''; });
+
+  function fromHash(){
+    const m = location.hash.match(/^#cpt=([^&]+)/);
+    if (m && byCode.size) openDetail(decodeURIComponent(m[1]));
+  }
+  window.addEventListener('hashchange', fromHash);
+
+  // ---------------- Inicio ----------------
+  prefs = { ...prefs, ...(store.get(PREFS_KEY) || {}) };
+  multi = Array.isArray(store.get(MULTI_KEY)) ? store.get(MULTI_KEY) : [];
+  updateMultiCount();
+  renderConfig();
+  renderPay(); renderMulti();
+  loadCatalog(false).then(fromHash);
+})();
+</script>
+</body>
+</html>

@@ -533,7 +533,39 @@
     return { ok:true, version:'1-adaptado', generado:null, reglas:{...REGLAS_DEFAULT}, polizas, secciones, codigos:out };
   }
 
+  // ---------------- Pólizas adicionales (polizas_extra.json en este repositorio) ----------------
+  // SURA e Inbursa se publican junto a la página y se suman a lo que entrega el Apps Script.
+  let EXTRA = null;
+  const extraReady = fetch('polizas_extra.json', { cache:'no-store' })
+    .then(r => r.ok ? r.json() : null).then(j => { EXTRA = j; }).catch(() => { EXTRA = null; });
+
+  function mergeExtra(data){
+    if (!EXTRA || !data || !Array.isArray(data.codigos)) return data;
+    const polizas = (data.polizas || []).slice();
+    const pIdx = {};
+    polizas.forEach((p,i) => { pIdx[p.id] = i; });
+    EXTRA.polizas.forEach(p => {
+      if (pIdx[p.id] === undefined){ pIdx[p.id] = polizas.length; polizas.push({ id:p.id, aseguradora:p.aseguradora, poliza:p.poliza, nivel:p.nivel||'', orden:p.orden||0 }); }
+    });
+    const codigos = data.codigos.map(o => ({ ...o, p: (o.p || []).slice() }));
+    const byC = new Map(codigos.map(o => [normCode(o.c), o]));
+    (EXTRA.nuevos || []).forEach(n => {
+      const k = normCode(n.c);
+      if (!byC.has(k)){ const o = { c:k, d:n.d, s:n.s, r:n.r ?? null, a:n.a || 0, p:[] }; codigos.push(o); byC.set(k, o); }
+    });
+    Object.entries(EXTRA.tarifas || {}).forEach(([c, list]) => {
+      const o = byC.get(normCode(c)); if (!o) return;
+      list.forEach(([pid, tarifa, hon]) => {
+        const i = pIdx[pid];
+        if (i !== undefined && !o.p.some(x => x[0] === i)) o.p.push([i, tarifa, hon]);
+      });
+    });
+    codigos.sort((a,b) => a.c.localeCompare(b.c, 'en', { numeric:true }));
+    return { ...data, polizas, codigos };
+  }
+
   function setData(data){
+    data = mergeExtra(data);
     DATA = {
       reglas: { ...REGLAS_DEFAULT, ...(data.reglas||{}) },
       polizas: data.polizas || [],
@@ -562,6 +594,7 @@
       $('statusText').textContent = 'Sin conectar';
       return;
     }
+    await extraReady;
     const cached = store.get(CACHE_KEY);
     if (cached && cached.data && !DATA.codigos.length){
       setData(cached.data);

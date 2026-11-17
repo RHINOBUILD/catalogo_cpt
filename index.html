@@ -352,7 +352,7 @@
   <div class="config-inner">
     <div class="cfg">
       <label for="cfgPoliza">Aseguradora / póliza</label>
-      <select id="cfgPoliza"><option value="">Promedio de pólizas disponibles</option></select>
+      <select id="cfgPoliza"><option value="">Promedio normal (todas las pólizas)</option></select>
     </div>
     <div class="cfg">
       <span id="pacLbl" style="font-weight:600;color:var(--ink)">Paciente</span>
@@ -630,18 +630,35 @@
   }
 
   // ---------------- Preferencias globales ----------------
+  // Tipo de plan promediado: '' = normal (todas), '@max' = máximo (pólizas VIP), '@min' = mínimo (pólizas nivel bajo)
+  const MODOS = {
+    '':     { lbl:'promedio normal', nivel:null },
+    '@max': { lbl:'promedio máximo', nivel:'VIP' },
+    '@min': { lbl:'promedio mínimo', nivel:'BAJO' }
+  };
+  const modo = () => MODOS[prefs.poliza] ? prefs.poliza : '';
+  /** Pólizas de un código que entran al promedio según el tipo de plan elegido. */
+  function modeSubset(o){
+    const m = MODOS[modo()];
+    if (!m.nivel) return o.p;
+    const niv = o.p.filter(x => String(DATA.polizas[x[0]]?.nivel || '').trim().toUpperCase() === m.nivel);
+    if (niv.length) return niv;
+    // Sin pólizas de ese nivel para el código: se toma la tarifa más alta (máximo) o más baja (mínimo) disponible
+    const sorted = o.p.slice().sort((a,b) => a[2] - b[2]);
+    return [m.nivel === 'VIP' ? sorted[sorted.length-1] : sorted[0]];
+  }
   function polIndexSelected(){
-    if (!prefs.poliza) return -1;
+    if (!prefs.poliza || MODOS[prefs.poliza]) return -1;
     return DATA.polizas.findIndex(p => p.id === prefs.poliza);
   }
   function renderConfig(){
     const sel = $('cfgPoliza');
     const groups = {};
     DATA.polizas.forEach((p,i) => { (groups[p.aseguradora] ||= []).push([p,i]); });
-    sel.innerHTML = '<option value="">Promedio de pólizas disponibles</option>' +
+    sel.innerHTML = '<optgroup label="Tipo de plan (promedio)"><option value="@max">Promedio máximo (pólizas VIP)</option><option value="">Promedio normal (todas las pólizas)</option><option value="@min">Promedio mínimo (pólizas nivel bajo)</option></optgroup>' +
       Object.entries(groups).map(([a,list]) => `<optgroup label="${esc(a)}">` +
         list.map(([p]) => `<option value="${esc(p.id)}">${esc(a)} · ${esc(p.poliza)}${p.nivel?' ('+esc(cap(p.nivel))+')':''}</option>`).join('') + '</optgroup>').join('');
-    if (prefs.poliza && !DATA.polizas.some(p => p.id === prefs.poliza)) prefs.poliza = '';
+    if (prefs.poliza && !MODOS[prefs.poliza] && !DATA.polizas.some(p => p.id === prefs.poliza)) prefs.poliza = '';
     sel.value = prefs.poliza;
     $('hintDesc').textContent = 'menos ' + pct(R().descuento);
     $('multiRuleHint').textContent = `El procedimiento de mayor honorario se paga al ${pct(R().multi_1)}, el segundo al ${pct(R().multi_2)} y del tercero en adelante al ${pct(R().multi_3)}. Los códigos adicionales (+) se pagan completos y no cuentan en el orden.`;
@@ -663,8 +680,9 @@
   function feeFor(o, polIdx = polIndexSelected()){
     if (!o || !o.p.length) return null;
     if (polIdx >= 0){ const x = o._pm.get(polIdx); return x ? { fee:x[2], tarifa:x[1], n:1, label:DATA.polizas[polIdx].id } : null; }
-    const fee = o.p.reduce((s,x) => s + x[2], 0) / o.p.length;
-    return { fee, tarifa:null, n:o.p.length, label:`promedio de ${o.p.length} póliza${o.p.length===1?'':'s'}` };
+    const list = modeSubset(o);
+    const fee = list.reduce((s,x) => s + x[2], 0) / list.length;
+    return { fee, tarifa:null, n:list.length, label:`${MODOS[modo()].lbl} · ${list.length} póliza${list.length===1?'':'s'}` };
   }
   function asegsOf(o){ return [...new Set(o.p.map(x => DATA.polizas[x[0]]?.aseguradora).filter(Boolean))]; }
 
@@ -730,7 +748,7 @@
     const q = $('searchInput').value.trim();
     const res = search(q);
     const total = DATA.codigos.length;
-    $('statusText').innerHTML = total ? `<b>${res.length.toLocaleString('es-MX')}</b> de <b>${total.toLocaleString('es-MX')}</b> códigos` + (polIndexSelected()>=0 ? ` · honorario ${esc(DATA.polizas[polIndexSelected()].id)}` : ' · honorario promedio') : 'El catálogo aún no tiene códigos cargados';
+    $('statusText').innerHTML = total ? `<b>${res.length.toLocaleString('es-MX')}</b> de <b>${total.toLocaleString('es-MX')}</b> códigos` + (polIndexSelected()>=0 ? ` · honorario ${esc(DATA.polizas[polIndexSelected()].id)}` : ' · honorario ' + MODOS[modo()].lbl) : 'El catálogo aún no tiene códigos cargados';
     if (!res.length){
       $('results').innerHTML = stateHtml('🔍','Sin resultados','No se encontró ningún código con esos criterios. Prueba con otra palabra o quita filtros.' , q ? requestFormHtml(normCode(q).match(/^\d{4,5}[A-Z]?$/) ? normCode(q) : '') : '');
       $('moreWrap').hidden = true; return;
@@ -896,7 +914,7 @@
 
     const pi = polIndexSelected();
     if (!payChecked){
-      payChecked = new Set(pi >= 0 && o._pm.has(pi) ? [pi] : o.p.map(x => x[0]));
+      payChecked = new Set(pi >= 0 && o._pm.has(pi) ? [pi] : modeSubset(o).map(x => x[0]));
     }
     if (!payRoles){
       payRoles = new Set(ROLES.filter(r => r.key === 'cir' || !o.r || o.r[r.flag]).map(r => r.key));
@@ -924,7 +942,7 @@
       rows += `<tr class="${payChecked.has(i)?'picked':''}"><td><label style="display:flex;gap:8px;align-items:center;cursor:pointer"><input type="checkbox" data-pol="${i}" ${payChecked.has(i)?'checked':''} style="accent-color:var(--navy-700)"> ${esc(p.poliza)} <span class="lvl">${esc(cap(p.nivel))}</span></label></td><td class="num">${money(x[1])}</td><td class="num">${money(x[2])}</td></tr>`;
     });
 
-    const tabLbl = sel.length === 1 ? DATA.polizas[sel[0][0]].id : `promedio de ${sel.length} pólizas`;
+    const tabLbl = sel.length === 1 ? DATA.polizas[sel[0][0]].id : `${pi < 0 ? MODOS[modo()].lbl : 'promedio'} de ${sel.length} pólizas`;
     out.innerHTML = `
       <div class="calc-grid">
         <div>
@@ -1045,7 +1063,7 @@
         <div>
           ${cards}${miss}
           <div class="row" style="justify-content:space-between;margin-top:6px">
-            <span class="hint" style="margin:0">Pólizas: ${esc(m.pi>=0 ? DATA.polizas[m.pi].id : 'promedio de las disponibles por código')}</span>
+            <span class="hint" style="margin:0">Pólizas: ${esc(m.pi>=0 ? DATA.polizas[m.pi].id : MODOS[modo()].lbl + ' por código')}</span>
             <button class="linkbtn" type="button" data-act="clearmulti">Vaciar lista</button>
           </div>
         </div>
@@ -1091,7 +1109,7 @@
         ${m.priced.map(x => `<tr><td>${x.rank==='a'?'Adicional':x.rank+1}</td><td>${esc(x.c)}</td><td>${esc(x.o.d)}</td><td class="num">${money(x.base)}</td><td class="num">${pct(x.pct)}</td><td class="num">${money(x.base*x.pct)}</td></tr>`).join('')}
         ${m.missing.map(x => `<tr><td>—</td><td>${esc(x.c)}</td><td>Sin tarifa (no incluido)</td><td></td><td></td><td></td></tr>`).join('')}
         </tbody></table>
-        <p>Pólizas: ${esc(m.pi>=0 ? DATA.polizas[m.pi].id : 'promedio de las disponibles')} · ${esc(adjTxt)}</p>
+        <p>Pólizas: ${esc(m.pi>=0 ? DATA.polizas[m.pi].id : MODOS[modo()].lbl)} · ${esc(adjTxt)}</p>
         <table><thead><tr><th>Rol</th><th class="num">Importe</th></tr></thead><tbody>${team.map(t => `<tr><td>${esc(t[0])}</td><td class="num">${money(t[1])}</td></tr>`).join('')}</tbody></table>
         <div class="p-total"><span>Total equipo quirúrgico</span><span>${money(teamTot)}</span></div>`;
     } else return;

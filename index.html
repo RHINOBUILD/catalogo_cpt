@@ -491,7 +491,6 @@
   let payChecked = null;   // Set de índices de póliza marcadas
   let payRoles = null;     // Set de roles incluidos
   let payNeg = '';         // honorario negociado
-  let teamTotal = '';
   let multiAy2 = false;
   let shown = PAGE;
 
@@ -875,8 +874,8 @@
   function renderPay(){
     const out = $('payOut');
     if (!payCode){
-      out.innerHTML = `<div class="state"><div class="state-icon" aria-hidden="true">🧮</div><h3>Elige un código</h3><p>Busca un código CPT para ver las tarifas por aseguradora y el desglose del equipo quirúrgico.</p></div>` + teamBoxHtml();
-      bindTeam(); return;
+      out.innerHTML = `<div class="state"><div class="state-icon" aria-hidden="true">🧮</div><h3>Elige un código</h3><p>Busca un código CPT para ver las tarifas por aseguradora y el desglose del equipo quirúrgico.</p></div>`
+      return;
     }
     const o = byCode.get(payCode);
     if (!o){ out.innerHTML = `<p class="warn">El código ${esc(payCode)} no está en el catálogo.</p>` + `<div class="box" style="margin-top:12px">${requestFormHtml(payCode)}</div>`; return; }
@@ -953,38 +952,16 @@
             </div>
           </div>
         </div>
-      </div>` + teamBoxHtml();
+      </div>`
 
     out.querySelectorAll('[data-pol]').forEach(ch => ch.addEventListener('change', () => { const i = +ch.dataset.pol; ch.checked ? payChecked.add(i) : payChecked.delete(i); renderPay(); }));
     out.querySelectorAll('[data-role]').forEach(ch => ch.addEventListener('change', () => { ch.checked ? payRoles.add(ch.dataset.role) : payRoles.delete(ch.dataset.role); renderPay(); }));
     const ni = $('negInput');
     ni.addEventListener('change', () => { payNeg = ni.value; renderPay(); });
     ni.addEventListener('keydown', e => { if (e.key === 'Enter'){ payNeg = ni.value; renderPay(); } });
-    bindTeam();
     payState = { o, sel, base, adj, cir, totalTeam, useNeg, tabLbl };
   }
   let payState = null;
-
-  function teamBoxHtml(){
-    const t = parseFloat(String(teamTotal).replace(/[^0-9.]/g,''));
-    const ok = isFinite(t) && t > 0;
-    const c = ok ? t / R().divisor_equipo : 0;
-    return `<details class="box" style="margin-top:16px" ${teamTotal ? 'open' : ''}>
-      <summary>Precio por equipo quirúrgico completo</summary>
-      <p class="hint">Cuando el médico da un solo precio por todo el equipo: cirujano = total ÷ ${R().divisor_equipo}, y de ahí ${pct(R().pct_anestesiologo)} anestesiólogo y ${pct(R().pct_ayudante1)} 1er ayudante.</p>
-      <div class="inline-input"><input class="input" id="teamInput" inputmode="decimal" placeholder="$ total del equipo" value="${esc(teamTotal)}"></div>
-      ${ok ? `<div class="roles" style="margin-top:8px">
-        <div class="role"><span>Cirujano</span><span class="amt">${money(c)}</span></div>
-        <div class="role"><span>Anestesiólogo</span><span class="amt">${money(c*R().pct_anestesiologo)}</span></div>
-        <div class="role"><span>1er Ayudante</span><span class="amt">${money(c*R().pct_ayudante1)}</span></div>
-        <div class="role total"><span>Total</span><span class="amt">${money(c*(1+R().pct_anestesiologo+R().pct_ayudante1))}</span></div></div>` : ''}
-    </details>`;
-  }
-  function bindTeam(){
-    const ti = $('teamInput'); if (!ti) return;
-    const upd = () => { teamTotal = ti.value; const pos = ti.selectionStart; renderPay(); const n = $('teamInput'); if (n){ n.focus(); try{ n.setSelectionRange(pos,pos);}catch(e){} } };
-    ti.addEventListener('input', debounce(upd, 350));
-  }
 
   // ---------------- Varios códigos ----------------
   function addMulti(code){

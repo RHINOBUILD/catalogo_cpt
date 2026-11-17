@@ -1,0 +1,645 @@
+{
+ "fuente": "Tabulador_CPTs_2025",
+ "actualizado": "2026-11-17",
+ "seguros": [
+  {
+   "titulo": "Consulta Médico General",
+   "filas": [
+    {
+     "n": "ABA",
+     "costo": 800,
+     "iva": 128,
+     "neto": 928,
+     "nota": ""
+    },
+    {
+     "n": "ANA",
+     "costo": 632,
+     "iva": 101.12,
+     "neto": 733.12,
+     "nota": ""
+    },
+    {
+     "n": "CHUBB",
+     "costo": 800,
+     "iva": 128,
+     "neto": 928,
+     "nota": ""
+    },
+    {
+     "n": "ECOLAB",
+     "costo": 770,
+     "iva": 123.2,
+     "neto": 893.2,
+     "nota": ""
+    },
+    {
+     "n": "GENERAL DE SALUD",
+     "costo": 1500,
+     "iva": 240,
+     "neto": 1740,
+     "nota": ""
+    },
+    {
+     "n": "INTEGRA SALUD",
+     "costo": 800,
+     "iva": 128,
+     "neto": 928,
+     "nota": ""
+    },
+    {
+     "n": "PUNTO PEN",
+     "costo": 1025.95,
+     "iva": 164.15,
+     "neto": 1190.1,
+     "nota": ""
+    },
+    {
+     "n": "SIGMA",
+     "costo": 1025.95,
+     "iva": 164.15,
+     "neto": 1190.1,
+     "nota": ""
+    },
+    {
+     "n": "VISIT · COSULMED",
+     "costo": 3500,
+     "iva": 560,
+     "neto": 4060,
+     "nota": "Horario de 07:00 a 19:00"
+    },
+    {
+     "n": "TELASIST",
+     "costo": 3500,
+     "iva": 560,
+     "neto": 4060,
+     "nota": ""
+    },
+    {
+     "n": "RELUMED",
+     "costo": 2500,
+     "iva": 400,
+     "neto": 2900,
+     "nota": ""
+    },
+    {
+     "n": "IKE",
+     "costo": 3500,
+     "iva": 560,
+     "neto": 4060,
+     "nota": ""
+    }
+   ],
+   "col": "Seguro"
+  },
+  {
+   "titulo": "Interconsulta Médico Especialista",
+   "filas": [
+    {
+     "n": "ABA",
+     "costo": 1200,
+     "iva": 192,
+     "neto": 1392,
+     "nota": ""
+    },
+    {
+     "n": "ANA",
+     "costo": 800,
+     "iva": 128,
+     "neto": 928,
+     "nota": ""
+    },
+    {
+     "n": "BANORTE",
+     "costo": 1800,
+     "iva": 288,
+     "neto": 2088,
+     "nota": ""
+    },
+    {
+     "n": "CHUBB",
+     "costo": 1200,
+     "iva": 192,
+     "neto": 1392,
+     "nota": ""
+    },
+    {
+     "n": "ECOLAB",
+     "costo": 1200,
+     "iva": 192,
+     "neto": 1392,
+     "nota": ""
+    },
+    {
+     "n": "GENERAL DE SALUD",
+     "costo": 2200,
+     "iva": 352,
+     "neto": 2552,
+     "nota": ""
+    },
+    {
+     "n": "INTEGRA SALUD",
+     "costo": 1500,
+     "iva": 240,
+     "neto": 1740,
+     "nota": ""
+    },
+    {
+     "n": "PUNTO PEN",
+     "costo": 1200,
+     "iva": 192,
+     "neto": 1392,
+     "nota": ""
+    },
+    {
+     "n": "SIGMA",
+     "costo": 1200,
+     "iva": 192,
+     "neto": 1392,
+     "nota": ""
+    },
+    {
+     "n": "VISIT · COSULMED",
+     "costo": 4500,
+     "iva": 720,
+     "neto": 5220,
+     "nota": "Horario de 07:00 a 19:00"
+    },
+    {
+     "n": "TELASIST",
+     "costo": 4500,
+     "iva": 720,
+     "neto": 5220,
+     "nota": ""
+    },
+    {
+     "n": "RELUMED",
+     "costo": 4500,
+     "iva": 720,
+     "neto": 5220,
+     "nota": ""
+    },
+    {
+     "n": "IKE",
+     "costo": 4500,
+     "iva": 720,
+     "neto": 5220,
+     "nota": ""
+    }
+   ],
+   "col": "Seguro"
+  }
+ ],
+ "bancos": [
+  {
+   "titulo": "Consulta Médico General",
+   "filas": [
+    {
+     "n": "BANORTE",
+     "costo": 612.28,
+     "iva": 97.96,
+     "neto": 710.24,
+     "nota": ""
+    },
+    {
+     "n": "HSBC",
+     "costo": 1025.95,
+     "iva": 164.15,
+     "neto": 1190.1,
+     "nota": ""
+    },
+    {
+     "n": "SANTANDER",
+     "costo": 1025.95,
+     "iva": 164.15,
+     "neto": 1190.1,
+     "nota": ""
+    },
+    {
+     "n": "SCOTIABANK",
+     "costo": 1025.95,
+     "iva": 164.15,
+     "neto": 1190.1,
+     "nota": ""
+    }
+   ],
+   "col": "Compañia"
+  },
+  {
+   "titulo": "Consulta Médico Especialista",
+   "filas": [
+    {
+     "n": "BANORTE",
+     "costo": 1800,
+     "iva": 288,
+     "neto": 2088,
+     "nota": ""
+    },
+    {
+     "n": "HSBC",
+     "costo": 1200,
+     "iva": 192,
+     "neto": 1392,
+     "nota": ""
+    },
+    {
+     "n": "SANTANDER",
+     "costo": 1200,
+     "iva": 192,
+     "neto": 1392,
+     "nota": ""
+    },
+    {
+     "n": "SCOTIABANK",
+     "costo": 1293.75,
+     "iva": 207,
+     "neto": 1500.75,
+     "nota": ""
+    }
+   ],
+   "col": "Compañia"
+  }
+ ],
+ "interconsultas": [
+  {
+   "n": "Paciente Nacional",
+   "h1": [
+    2000,
+    3500
+   ],
+   "h2": [
+    2500,
+    4000
+   ],
+   "h3": [
+    3000,
+    6000
+   ]
+  },
+  {
+   "n": "Paciente Extranjero o sin seguro",
+   "h1": [
+    2500,
+    6000
+   ],
+   "h2": [
+    3000,
+    6000
+   ],
+   "h3": [
+    4000,
+    8000
+   ]
+  },
+  {
+   "n": "Paciente Extranjero con seguro",
+   "h1": [
+    3000,
+    6000
+   ],
+   "h2": [
+    4000,
+    7000
+   ],
+   "h3": [
+    5000,
+    9000
+   ]
+  }
+ ],
+ "terapia": [
+  {
+   "n": "Terapia Intermedia",
+   "dia": [
+    1,
+    10000
+   ],
+   "noche": [
+    5000,
+    10000
+   ]
+  },
+  {
+   "n": "Terapia Intensiva",
+   "dia": [
+    1,
+    15000
+   ],
+   "noche": [
+    7000,
+    15000
+   ]
+  }
+ ],
+ "especialistas": [
+  {
+   "n": "Paciente Nacional",
+   "h1": [
+    1,
+    3500
+   ],
+   "h2": [
+    2500,
+    4000
+   ],
+   "h3": [
+    3000,
+    6000
+   ]
+  },
+  {
+   "n": "Paciente Extranjero o sin seguro",
+   "h1": [
+    1,
+    6000
+   ],
+   "h2": [
+    3000,
+    6000
+   ],
+   "h3": [
+    4000,
+    8000
+   ]
+  },
+  {
+   "n": "Paciente Extranjero con seguro",
+   "h1": [
+    1,
+    6000
+   ],
+   "h2": [
+    4000,
+    7000
+   ],
+   "h3": [
+    5000,
+    9000
+   ]
+  }
+ ],
+ "notas": [
+  "1.- EN PACIENTES DE CONVENIO DAMOS 20% DE DESCUENTO Y DE VILLAGROUP DAMOS 30% DE DESCUENTO A COLABORADORES",
+  "2.- EN CASO DE PROCEDIMIENTO EN URGENCIAS O DE UNA CIRUGIA, LA INTERCONSULTA SE CARGA EN LA CUENTA Y SE PONE EN 1 PESO PARA EL MEDICO Y EL RESTO A HOSPITAL (ESTO PORQUE YA SABIA QUE VENIA A HACER UN PROCEDIMIENTO EJ SUTURA O REDUCCION CERRADA)",
+  "3.- CUANDO HAYA INTERCONSULTAS DE ESPECIALIDADES DE ALGUN SUBESPECIALISTA COMO NEUROCIRUGIA Y MAXILOFACIAL APLICA OTRO FAVOR DE HABLAR A HONORARIOS Y/O DIRECCION",
+  "4.- CIERTAS ASEGURADORAS NACIONALES SE HACEN MEDIANTE TABULACION DIRECTA Y OTRAS SI SE CARGA EN EL ESTADO DE CUENTA, ALGUNOS SEGUROS NACIONALES TIENEN TABULADORES ESTABLECIDOS, VER ANEXO ABAJO",
+  "**EN ESTOS CASOS SE LE PONE EL 75% AL MEDICO Y EL RESTO SE COBRA PARA HOSPITAL (MAS EL IVA) POR LA GESTION DE COBRANZA",
+  "6.- MANEJO DE INTERCONSULTAS ESPECIALIDADES MEDICOS DENTRO HORARIO LUNES A SABADO: DR DANIEL JARQUIN ORTOPEDISTA (8AM A 8PM), DR IVAN GOMEZ TERAPIA INTENSIVA (8AM A 8PM), DRA DULCE TAVARES MEDICINA INTERNA (2PM A 10PM), DR GONZALEZ CIRUJANO (8AM A 8PM), DR REYES (8AM A 8PM)",
+  "*EN CASO DE SEGURO SEGÚN TABULADOR PASSAGE ES 52K Y OTRAS INTER ES 32K",
+  "*EN TERAPIA INTERMEDIA E INTENSIVA CUANDO EL PACIENTE TENGA 24 HORAS SE LE CARGA CON EL TABULADOR NOCTURNO PARA EL DOCTOR, SI ES SOLO DURANTE HORARIO DIURNO (SU ALTA ES DURANTE EL DIA) SE CARGA EN 1 PESO"
+ ],
+ "servicios": [
+  {
+   "n": "CONSULTA (MÉDICO GENERAL, PSICOLOGÍA)",
+   "tipo": "Consultas",
+   "cdmx": 1500,
+   "resto": 350
+  },
+  {
+   "n": "CONSULTA (MÉDICO ESPECIALISTA Y SUBESPECIALISTA)",
+   "tipo": "Consultas",
+   "cdmx": 1500,
+   "resto": 850
+  },
+  {
+   "n": "ATENCIÓN MEDICA HOSPITALARIA (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS) DEL DÍA 1 AL 5",
+   "tipo": "Consultas",
+   "cdmx": 1250,
+   "resto": 1000
+  },
+  {
+   "n": "ATENCIÓN MEDICA HOSPITALARIA (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS) DEL DÍA 6 AL 10",
+   "tipo": "Consultas",
+   "cdmx": 1063,
+   "resto": 850
+  },
+  {
+   "n": "ATENCIÓN MEDICA HOSPITALARIA (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS) DEL DÍA 11 EN ADELANTE",
+   "tipo": "Consultas",
+   "cdmx": 938,
+   "resto": 750
+  },
+  {
+   "n": "ATENCIÓN MEDICA EN TERAPIA INTERMEDIA (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS), DEL DÍA 1 AL 5",
+   "tipo": "Consultas",
+   "cdmx": 1400,
+   "resto": 1120
+  },
+  {
+   "n": "ATENCIÓN MEDICA EN TERAPIA INTERMEDIA (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS), DEL DÍA 6 AL 10",
+   "tipo": "Consultas",
+   "cdmx": 1190,
+   "resto": 952
+  },
+  {
+   "n": "ATENCIÓN MEDICA EN TERAPIA INTERMEDIA (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS), DEL DÍA 11 EN ADELANTE",
+   "tipo": "Consultas",
+   "cdmx": 1050,
+   "resto": 840
+  },
+  {
+   "n": "ATENCIÓN MEDICA EN TERAPIA INTENSIVA O UNIDAD CORONARIA (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS), DEL DÍA 1 AL 5",
+   "tipo": "Consultas",
+   "cdmx": 1750,
+   "resto": 1400
+  },
+  {
+   "n": "ATENCIÓN MEDICA EN TERAPIA INTENSIVA O UNIDAD CORONARIA (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS), DEL DÍA 6 AL 10",
+   "tipo": "Consultas",
+   "cdmx": 1488,
+   "resto": 1190
+  },
+  {
+   "n": "ATENCIÓN MEDICA EN TERAPIA INTENSIVA O UNIDAD CORONARIA (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS), DEL DÍA 11 AL 15",
+   "tipo": "Consultas",
+   "cdmx": 1313,
+   "resto": 1050
+  },
+  {
+   "n": "ATENCIÓN MEDICA EN TERAPIA INTENSIVA O UNIDAD CORONARIA (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS), DEL DÍA 16 EN ADELANTE",
+   "tipo": "Consultas",
+   "cdmx": 1138,
+   "resto": 910
+  },
+  {
+   "n": "VISITA MÉDICA EN EL SERVICIO DE URGENCIAS DE 8:00 A 20:59 HRS. EN DÍAS HÁBILES",
+   "tipo": "Consultas",
+   "cdmx": 1250,
+   "resto": 1000
+  },
+  {
+   "n": "VISITA MÉDICA EN EL SERVICIO DE URGENCIAS EN HORARIO DE 21:00 Y 7:59 Y EN SÁBADO, DOMINGO Y DÍAS FESTIVOS",
+   "tipo": "Consultas",
+   "cdmx": 1500,
+   "resto": 1200
+  },
+  {
+   "n": "INTERCONSULTAS",
+   "tipo": "Consultas",
+   "cdmx": 1250,
+   "resto": 1000
+  },
+  {
+   "n": "VALORACIÓN PREOPERATORIA",
+   "tipo": "Consultas",
+   "cdmx": 1250,
+   "resto": 1000
+  },
+  {
+   "n": "ATENCIÓN MEDICA UNIDAD DE CUIDADOS INTENSIVOS NEONATAL (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS), DEL DÍA 1 AL 5",
+   "tipo": "Consultas",
+   "cdmx": 2500,
+   "resto": 2000
+  },
+  {
+   "n": "ATENCIÓN MEDICA UNIDAD DE CUIDADOS INTENSIVOS NEONATAL (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS), DEL DÍA 6 AL 10",
+   "tipo": "Consultas",
+   "cdmx": 2125,
+   "resto": 1700
+  },
+  {
+   "n": "ATENCIÓN MEDICA UNIDAD DE CUIDADOS INTENSIVOS NEONATAL (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS), DEL DÍA 11 AL 15",
+   "tipo": "Consultas",
+   "cdmx": 1875,
+   "resto": 1500
+  },
+  {
+   "n": "ATENCIÓN MEDICA UNIDAD DE CUIDADOS INTENSIVOS NEONATAL (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS), DEL DÍA 16 EN ADELANTE",
+   "tipo": "Consultas",
+   "cdmx": 1625,
+   "resto": 1300
+  },
+  {
+   "n": "ATENCIÓN MEDICA EN TERAPIA INTENSIVA PEDIÁTRICA (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS), DEL DÍA 1 AL 5",
+   "tipo": "Consultas",
+   "cdmx": 1750,
+   "resto": 1400
+  },
+  {
+   "n": "ATENCIÓN MEDICA EN TERAPIA INTENSIVA PEDIATRICA (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS), DEL DÍA 6 AL 10",
+   "tipo": "Consultas",
+   "cdmx": 1488,
+   "resto": 1190
+  },
+  {
+   "n": "ATENCIÓN MEDICA EN TERAPIA INTENSIVA PEDIATRICA (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS), DEL DÍA 11 AL 15",
+   "tipo": "Consultas",
+   "cdmx": 1313,
+   "resto": 1050
+  },
+  {
+   "n": "ATENCIÓN MEDICA EN TERAPIA INTENSIVA PEDIATRICA (POR DÍA, INDEPENDIENTE DEL NÚMERO DE VISITAS), DEL DÍA 15 EN ADELANTE",
+   "tipo": "Consultas",
+   "cdmx": 1138,
+   "resto": 910
+  },
+  {
+   "n": "APLICACIÓN DE QUIMIOTERAPIA",
+   "tipo": "Quimioterapia",
+   "cdmx": 3773,
+   "resto": 3234
+  },
+  {
+   "n": "RADIOTERAPIA, PLANIFICACION DE RADIOLOGIA TERAPEUTICA SENCILLA",
+   "tipo": "Radioterapia",
+   "cdmx": 1568,
+   "resto": 1372
+  },
+  {
+   "n": "HEMODIALISIS, PROCEDIMIENTO CON EVALUACION MEDICA",
+   "tipo": "Hemodialisis",
+   "cdmx": 1456,
+   "resto": 1274
+  },
+  {
+   "n": "REHABILITACION ( CONSULTA DE VALORACION)",
+   "tipo": "Rehabilitación",
+   "cdmx": 850,
+   "resto": 700
+  },
+  {
+   "n": "REHABILITACION ( CONSULTA DE REEVALUACION)",
+   "tipo": "Rehabilitación",
+   "cdmx": 608,
+   "resto": 500
+  },
+  {
+   "n": "REHABILITACION POR SESION, UNA O MAS ZONAS, CUALQUIER TECNICA",
+   "tipo": "Rehabilitación",
+   "cdmx": 425,
+   "resto": 350
+  },
+  {
+   "n": "REHABILITACION POR SESION, UNA O MAS ZONAS, CUALQUIER TECNICA A DOMICILIO (ESPECIALISTA)",
+   "tipo": "Rehabilitación",
+   "cdmx": 850,
+   "resto": 700
+  },
+  {
+   "n": "REHABILITACION POR SESION, UNA O MAS ZONAS, CUALQUIER TECNICA A DOMICILIO (TECNICO)",
+   "tipo": "Rehabilitación",
+   "cdmx": 608,
+   "resto": 500
+  },
+  {
+   "n": "VISITAS HIGH TECH (ENFERMERA GENERAL) (DOMICILIO)",
+   "tipo": "Enfermería",
+   "cdmx": 340,
+   "resto": 280
+  },
+  {
+   "n": "VISITAS HIGH TECH (ENFERMERA AUXILIAR) (DOMICILIO)",
+   "tipo": "Enfermería",
+   "cdmx": 255,
+   "resto": 210
+  },
+  {
+   "n": "CUIDADORA 12 HORAS (DOMICILIO)",
+   "tipo": "Enfermería",
+   "cdmx": 467,
+   "resto": 385
+  },
+  {
+   "n": "CUIDADORA 8 HORAS (DOMICILIO)",
+   "tipo": "Enfermería",
+   "cdmx": 340,
+   "resto": 280
+  },
+  {
+   "n": "ENFERMERA AUXILIAR 12 HORAS (DOMICILIO)",
+   "tipo": "Enfermería",
+   "cdmx": 680,
+   "resto": 560
+  },
+  {
+   "n": "ENFERMERA AUXILIAR 8 HORAS (DOMICILIO)",
+   "tipo": "Enfermería",
+   "cdmx": 467,
+   "resto": 385
+  },
+  {
+   "n": "ENFERMERA GENERAL 12 HORAS (DOMICILIO)",
+   "tipo": "Enfermería",
+   "cdmx": 850,
+   "resto": 700
+  },
+  {
+   "n": "ENFERMERA GENERAL 8 HORAS (DOMICILIO)",
+   "tipo": "Enfermería",
+   "cdmx": 680,
+   "resto": 560
+  },
+  {
+   "n": "ENFERMERA ESPECIALIZADA 12 HORAS (DOMICILIO)",
+   "tipo": "Enfermería",
+   "cdmx": 1093,
+   "resto": 900
+  },
+  {
+   "n": "ENFERMERA ESPECIALIZADA 8 HORAS (DOMICILIO)",
+   "tipo": "Enfermería",
+   "cdmx": 850,
+   "resto": 700
+  }
+ ]
+}

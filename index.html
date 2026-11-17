@@ -354,6 +354,13 @@
       <label for="cfgPoliza">Aseguradora / póliza</label>
       <select id="cfgPoliza"><option value="">Promedio de pólizas disponibles</option></select>
     </div>
+    <div class="cfg">
+      <span id="pacLbl" style="font-weight:600;color:var(--ink)">Paciente</span>
+      <div class="seg" role="group" aria-labelledby="pacLbl">
+        <button type="button" id="pacNac" aria-pressed="true">Nacional</button>
+        <button type="button" id="pacInt" aria-pressed="false">Internacional</button>
+      </div>
+    </div>
     <span class="cfg-note" id="cfgNote"></span>
   </div>
 </div>
@@ -485,7 +492,7 @@
   // ---------------- Estado ----------------
   let DATA = { reglas:{...REGLAS_DEFAULT}, polizas:[], secciones:[], codigos:[] };
   let byCode = new Map();
-  let prefs = { poliza:'' };
+  let prefs = { poliza:'', internacional:false };
   let multi = [];          // [{c}]
   let payCode = null;      // código activo en Calcular
   let payChecked = null;   // Set de índices de póliza marcadas
@@ -638,13 +645,19 @@
     sel.value = prefs.poliza;
     $('hintDesc').textContent = 'menos ' + pct(R().descuento);
     $('multiRuleHint').textContent = `El procedimiento de mayor honorario se paga al ${pct(R().multi_1)}, el segundo al ${pct(R().multi_2)} y del tercero en adelante al ${pct(R().multi_3)}. Los códigos adicionales (+) se pagan completos y no cuentan en el orden.`;
-    $('cfgNote').textContent = 'Honorario = tabulador −' + pct(R().descuento);
+    $('pacNac').setAttribute('aria-pressed', String(!prefs.internacional));
+    $('pacInt').setAttribute('aria-pressed', String(prefs.internacional));
+    $('cfgNote').textContent = prefs.internacional ? 'Paciente internacional ×' + R().factor_internacional : 'Tarifa nacional';
   }
   const cap = s => s ? s.charAt(0) + s.slice(1).toLowerCase() : '';
   function savePrefs(){ store.set(PREFS_KEY, prefs); renderConfig(); renderAll(); }
 
-  // Sin ajustes: se retiraron "Pronto pago" y "Paciente internacional" (nov 2026).
-  function adjust(base){ return { value:base, steps:[] }; }
+  // "Pronto pago" se retiró en nov 2026; se conserva el ajuste por paciente internacional.
+  function adjust(base){
+    let v = base, steps = [];
+    if (prefs.internacional){ v *= R().factor_internacional; steps.push(['Tarifa internacional ×' + R().factor_internacional, v]); }
+    return { value:v, steps };
+  }
 
   /** Honorario del cirujano para un código según la póliza global (o promedio). */
   function feeFor(o, polIdx = polIndexSelected()){
@@ -806,7 +819,7 @@
       <div style="overflow-x:auto"><table>
         <thead><tr><th>Póliza</th><th class="num col-tab">Tabulador</th><th class="num">Cirujano (−${pct(R().descuento)})</th>${hasAdj ? '<th class="num">Con ajustes</th>' : ''}</tr></thead>
         <tbody>${rows}</tbody></table></div>
-      <p class="hint">Honorario del cirujano = tarifa del tabulador −${pct(R().descuento)}.</p>
+      <p class="hint">${hasAdj ? '“Con ajustes”: ' + esc(adjLbl) + '. ' : 'Tarifa nacional. '}El tipo de paciente (nacional / internacional) se cambia en la barra superior.</p>
       <div class="modal-actions">
         <button class="btn" type="button" data-act="calc" data-code="${esc(o.c)}">Calcular honorarios del equipo</button>
         <button class="btn ghost" type="button" data-act="addmulti" data-code="${esc(o.c)}">+ Agregar a cirugía con varios códigos</button>
@@ -1062,12 +1075,13 @@
   function printSheet(kind){
     const now = new Date();
     const folio = 'CPT-' + now.toISOString().slice(0,10).replace(/-/g,'') + '-' + String(now.getHours()).padStart(2,'0') + String(now.getMinutes()).padStart(2,'0');
+    const adjTxt = adjust(1).steps.map(s => s[0]).join(' · ') || 'Tarifa nacional';
     let body = '';
     if (kind === 'pay' && payState){
       const s = payState;
       body = `<table><thead><tr><th>CPT</th><th>Descripción</th><th class="num">Honorario base</th></tr></thead>
         <tbody><tr><td>${esc(s.o.c)}</td><td>${esc(s.o.d)}</td><td class="num">${money(s.base)}</td></tr></tbody></table>
-        <p>Fuente: ${s.useNeg ? 'honorario negociado' : 'tabulador ' + esc(s.tabLbl) + ' −' + pct(R().descuento)}</p>
+        <p>Fuente: ${s.useNeg ? 'honorario negociado' : 'tabulador ' + esc(s.tabLbl) + ' −' + pct(R().descuento)} · ${esc(adjTxt)}</p>
         <table><thead><tr><th>Rol</th><th class="num">%</th><th class="num">Importe</th></tr></thead><tbody>
         ${ROLES.filter(r => payRoles.has(r.key)).map(r => `<tr><td>${esc(r.label)}</td><td class="num">${pct(R()[r.regla])}</td><td class="num">${money(s.cir * R()[r.regla] / R().pct_cirujano)}</td></tr>`).join('')}
         </tbody></table><div class="p-total"><span>Total equipo quirúrgico</span><span>${money(s.totalTeam)}</span></div>`;
@@ -1077,7 +1091,7 @@
         ${m.priced.map(x => `<tr><td>${x.rank==='a'?'Adicional':x.rank+1}</td><td>${esc(x.c)}</td><td>${esc(x.o.d)}</td><td class="num">${money(x.base)}</td><td class="num">${pct(x.pct)}</td><td class="num">${money(x.base*x.pct)}</td></tr>`).join('')}
         ${m.missing.map(x => `<tr><td>—</td><td>${esc(x.c)}</td><td>Sin tarifa (no incluido)</td><td></td><td></td><td></td></tr>`).join('')}
         </tbody></table>
-        <p>Pólizas: ${esc(m.pi>=0 ? DATA.polizas[m.pi].id : 'promedio de las disponibles')}</p>
+        <p>Pólizas: ${esc(m.pi>=0 ? DATA.polizas[m.pi].id : 'promedio de las disponibles')} · ${esc(adjTxt)}</p>
         <table><thead><tr><th>Rol</th><th class="num">Importe</th></tr></thead><tbody>${team.map(t => `<tr><td>${esc(t[0])}</td><td class="num">${money(t[1])}</td></tr>`).join('')}</tbody></table>
         <div class="p-total"><span>Total equipo quirúrgico</span><span>${money(teamTot)}</span></div>`;
     } else return;
@@ -1149,6 +1163,8 @@
   function renderAll(){ shown = PAGE; renderResults(); renderPay(); renderMulti(); }
 
   $('cfgPoliza').addEventListener('change', e => { prefs.poliza = e.target.value; payChecked = null; savePrefs(); });
+  $('pacNac').addEventListener('click', () => { prefs.internacional = false; savePrefs(); });
+  $('pacInt').addEventListener('click', () => { prefs.internacional = true; savePrefs(); });
 
   $('searchInput').addEventListener('input', debounce(() => { shown = PAGE; renderResults(); }, 120));
   $('secSelect').addEventListener('change', () => { shown = PAGE; renderResults(); });
